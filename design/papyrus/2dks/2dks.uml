@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:model="http:///schemas/model/_lRGJ0LnCEeqhFYEOShkASA/3" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/model/_lRGJ0LnCEeqhFYEOShkASA/3 2dks-angular.profile.uml#_lRGJ0bnCEeqhFYEOShkASA">
+  <uml:Model xmi:id="_9p_ewLTJEeqOvcMoAia_lg" name="2dks">
+    <packageImport xmi:type="uml:PackageImport" xmi:id="_9umR8LTJEeqOvcMoAia_lg">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Class" xmi:id="_CoUnsLTPEeqOvcMoAia_lg" name="SimulationComponent">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_hVqz4bTREeqdeYqAiwtBag" name="simulationToolbarComponent" type="_MwK-QLTLEeqOvcMoAia_lg" association="_hVplwLTREeqdeYqAiwtBag"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_ArdjULTYEeqdeYqAiwtBag" name="simulationCanvasComponent" type="_GKREcLTPEeqOvcMoAia_lg" association="_Arc8QLTYEeqdeYqAiwtBag"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_HVzUY7TYEeqdeYqAiwtBag" name="simulationService" type="_PGdt8LTQEeqdeYqAiwtBag" association="_HVzUYLTYEeqdeYqAiwtBag"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_GKREcLTPEeqOvcMoAia_lg" name="SimulationCanvasComponent">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_IfI7A7TYEeqdeYqAiwtBag" name="simulationService" type="_PGdt8LTQEeqdeYqAiwtBag" association="_IfI7ALTYEeqdeYqAiwtBag"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_MwK-QLTLEeqOvcMoAia_lg" name="SimulationToolbarComponent"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_PGdt8LTQEeqdeYqAiwtBag" name="SimulationService">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_0gAEQbWhEequbYbB8vO1tA" name="simulation" type="_sg19sLWTEequbYbB8vO1tA" association="_0f_dMLWhEequbYbB8vO1tA"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_QGzBILWiEequbYbB8vO1tA" name="play"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_QSRrkLZWEeqtQq7a9RjYuw" name="stop"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_enV5cLWiEequbYbB8vO1tA" name="step"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_NUWw4LWxEequbYbB8vO1tA" name="setCurrentTime">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_NUWw4bWxEequbYbB8vO1tA" name="currentTime">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_c5d88LZTEeqtQq7a9RjYuw" name="setTimeStep">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_c5d88bZTEeqtQq7a9RjYuw" name="timeStep">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_SN6HQLZVEeqtQq7a9RjYuw" name="setGravitySimulator">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_SN6HQbZVEeqtQq7a9RjYuw" name="implementation" type="_-e6NELZUEeqtQq7a9RjYuw"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_ferxILWiEequbYbB8vO1tA" name="setGravitationalConstant">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_AYcsILZWEeqtQq7a9RjYuw" name="gravitationalConstant">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_V_4kELZVEeqtQq7a9RjYuw" name="setCollisionSimulator">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_V_4kEbZVEeqtQq7a9RjYuw" name="implementation" type="_owEiELZUEeqtQq7a9RjYuw"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_34u4YLZWEeqtQq7a9RjYuw" name="addParticle">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_34u4YbZWEeqtQq7a9RjYuw" name="position" type="_Mt_Z4LUAEeq0vdCCkF6_mw"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_hVplwLTREeqdeYqAiwtBag" memberEnd="_hVqz4bTREeqdeYqAiwtBag _hVqz5LTREeqdeYqAiwtBag">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_hVqM0LTREeqdeYqAiwtBag" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_hVqz4LTREeqdeYqAiwtBag" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_hVqz5LTREeqdeYqAiwtBag" name="simulationComponent" type="_CoUnsLTPEeqOvcMoAia_lg" association="_hVplwLTREeqdeYqAiwtBag"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_Arc8QLTYEeqdeYqAiwtBag" memberEnd="_ArdjULTYEeqdeYqAiwtBag _ArdjU7TYEeqdeYqAiwtBag">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Arc8QbTYEeqdeYqAiwtBag" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Arc8QrTYEeqdeYqAiwtBag" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_ArdjU7TYEeqdeYqAiwtBag" name="simulationComponent" type="_CoUnsLTPEeqOvcMoAia_lg" association="_Arc8QLTYEeqdeYqAiwtBag"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_HVzUYLTYEeqdeYqAiwtBag" memberEnd="_HVzUY7TYEeqdeYqAiwtBag _HVz7crTYEeqdeYqAiwtBag">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_HVzUYbTYEeqdeYqAiwtBag" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_HVzUYrTYEeqdeYqAiwtBag" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_HVz7crTYEeqdeYqAiwtBag" name="simulationComponent" type="_CoUnsLTPEeqOvcMoAia_lg" association="_HVzUYLTYEeqdeYqAiwtBag"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_IfI7ALTYEeqdeYqAiwtBag" memberEnd="_IfI7A7TYEeqdeYqAiwtBag _IfJiErTYEeqdeYqAiwtBag">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_IfI7AbTYEeqdeYqAiwtBag" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_IfI7ArTYEeqdeYqAiwtBag" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_IfJiErTYEeqdeYqAiwtBag" name="simulationCanvasComponent" type="_GKREcLTPEeqOvcMoAia_lg" association="_IfI7ALTYEeqdeYqAiwtBag"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_0f_dMLWhEequbYbB8vO1tA" name="simulation" memberEnd="_0gAEQbWhEequbYbB8vO1tA _0gAERLWhEequbYbB8vO1tA">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_0f_dMbWhEequbYbB8vO1tA" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_0gAEQLWhEequbYbB8vO1tA" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_0gAERLWhEequbYbB8vO1tA" name="simulationservice" type="_PGdt8LTQEeqdeYqAiwtBag" association="_0f_dMLWhEequbYbB8vO1tA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_2l32QLY-EeqD3J4lAeBTWQ" name="ParticleFacade">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_HwZaALZqEeqtQq7a9RjYuw" name="particle" type="_arxjMLTbEeqdeYqAiwtBag"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_0L1ssLZSEeqtQq7a9RjYuw" name="onSnapshotChange">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_0L1ssbZSEeqtQq7a9RjYuw" name="callback" type="_I1unALZBEeq7d7Pzrd8Ivg"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_3w5H0LZSEeqtQq7a9RjYuw" name="onStep">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_3w5H0bZSEeqtQq7a9RjYuw" name="callback" type="_5NZx0LZBEeq7d7Pzrd8Ivg"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_ErdKsLZcEeqtQq7a9RjYuw" name="onParticleEditRequest">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_ErdKsbZcEeqtQq7a9RjYuw" name="callback" type="_xHO9ILZbEeqtQq7a9RjYuw"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_iuI7MLZcEeqtQq7a9RjYuw" name="setMass">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_iuI7MbZcEeqtQq7a9RjYuw" name="mass">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_mGUX8LZcEeqtQq7a9RjYuw" name="setRadius">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_mGUX8bZcEeqtQq7a9RjYuw" name="setRadius">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_yPnsELZcEeqtQq7a9RjYuw" name="setPosition">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_yPnsEbZcEeqtQq7a9RjYuw" name="position" type="_Mt_Z4LUAEeq0vdCCkF6_mw"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_1_SbwLZcEeqtQq7a9RjYuw" name="setVelocity">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_1_SbwbZcEeqtQq7a9RjYuw" name="velocity" type="_Mt_Z4LUAEeq0vdCCkF6_mw"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_FHl2oLZoEeqtQq7a9RjYuw" name="delete"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_I1unALZBEeq7d7Pzrd8Ivg" name="OnSnapshotChange">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_VR3QMLZEEeqtQq7a9RjYuw" name="callback">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_VR3QMbZEEeqtQq7a9RjYuw" name="particleSnapshot" type="_Vbz9wLZBEeq7d7Pzrd8Ivg"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_5NZx0LZBEeq7d7Pzrd8Ivg" name="OnStep">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_Nbg_ALZEEeqtQq7a9RjYuw" name="callback">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_Nbg_AbZEEeqtQq7a9RjYuw" name="step" type="_VPduYLZCEeq7d7Pzrd8Ivg"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_xHO9ILZbEeqtQq7a9RjYuw" name="OnParticleEdit">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_4pEW4LZbEeqtQq7a9RjYuw" name="callback">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_4pEW4bZbEeqtQq7a9RjYuw" name="edit" type="_ZrNXkLZbEeqtQq7a9RjYuw"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Vbz9wLZBEeq7d7Pzrd8Ivg" name="ParticleSnapshot">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_l4hn0LZBEeq7d7Pzrd8Ivg" name="mass">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_fiD1ALZBEeq7d7Pzrd8Ivg" name="radius">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_rdkkwLZBEeq7d7Pzrd8Ivg" name="kinematic" type="_9pbs8LWsEequbYbB8vO1tA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_VPduYLZCEeq7d7Pzrd8Ivg" name="ParticleStep">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_b6bKgLZCEeq7d7Pzrd8Ivg" name="endMass">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_fDvE0LZCEeq7d7Pzrd8Ivg" name="endRadius">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_1tIeILZDEeqtQq7a9RjYuw" name="timestampedKinematics" type="_vPQ4QLZCEeq7d7Pzrd8Ivg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_28SY4LZDEeqtQq7a9RjYuw"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_28X4cLZDEeqtQq7a9RjYuw" value="*"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_sg19sLWTEequbYbB8vO1tA" name="Simulation">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_IJGccLY_EeqD3J4lAeBTWQ" name="currentTime">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_LtVYMLY_EeqD3J4lAeBTWQ" name="timeStep">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_GQtUgLWcEequbYbB8vO1tA" name="particles" type="_arxjMLTbEeqdeYqAiwtBag" association="_GQpDELWcEequbYbB8vO1tA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_GQuioLWcEequbYbB8vO1tA"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_GQuiobWcEequbYbB8vO1tA" value="*"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_wPssoLZlEeqtQq7a9RjYuw" name="particleFacades" type="_2l32QLY-EeqD3J4lAeBTWQ">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_3DeGgLZlEeqtQq7a9RjYuw"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_3DgiwLZlEeqtQq7a9RjYuw" value="*"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_HRgDI7WcEequbYbB8vO1tA" name="simulator" type="_wgC-MLWTEequbYbB8vO1tA" association="_HRgDILWcEequbYbB8vO1tA"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_wvjd8LjBEeqNQZA9EX_8Xg" name="setCurrentTime">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_wvjd8bjBEeqNQZA9EX_8Xg" name="currentTime">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_2r12MLjBEeqNQZA9EX_8Xg" name="setTimeStep">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_2r12MbjBEeqNQZA9EX_8Xg" name="timeStep">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_8Qz6oLjBEeqNQZA9EX_8Xg" name="setGravitySimulator">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_8Qz6objBEeqNQZA9EX_8Xg" name="implementation" type="_-e6NELZUEeqtQq7a9RjYuw"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="__8ilgLjBEeqNQZA9EX_8Xg" name="setGravitationalConstant">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="__8ilgbjBEeqNQZA9EX_8Xg" name="gravitationalConstant">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_E5dLcLjCEeqNQZA9EX_8Xg" name="setCollisionSimulator">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_E5dLcbjCEeqNQZA9EX_8Xg" name="implementation" type="_owEiELZUEeqtQq7a9RjYuw"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_dVBZELZqEeqtQq7a9RjYuw" name="editParticle">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_dVBZErZqEeqtQq7a9RjYuw" name="edit" type="_ehSPULjEEeqNQZA9EX_8Xg"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_XCkm0LWqEequbYbB8vO1tA" name="advance"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_GQpDELWcEequbYbB8vO1tA" name="particles" memberEnd="_GQtUgLWcEequbYbB8vO1tA _GQuiorWcEequbYbB8vO1tA">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_GQrfULWcEequbYbB8vO1tA" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_GQstcLWcEequbYbB8vO1tA" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_GQuiorWcEequbYbB8vO1tA" name="simulation" type="_sg19sLWTEequbYbB8vO1tA" association="_GQpDELWcEequbYbB8vO1tA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_HRgDILWcEequbYbB8vO1tA" name="simulator" memberEnd="_HRgDI7WcEequbYbB8vO1tA _HRgqMrWcEequbYbB8vO1tA">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_HRgDIbWcEequbYbB8vO1tA" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_HRgDIrWcEequbYbB8vO1tA" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_HRgqMrWcEequbYbB8vO1tA" name="simulation" type="_sg19sLWTEequbYbB8vO1tA" association="_HRgDILWcEequbYbB8vO1tA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_wgC-MLWTEequbYbB8vO1tA" name="Simulator">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_vlTooLZhEeqtQq7a9RjYuw" name="gravitySimulatorEdits" type="_sOugsLWYEequbYbB8vO1tA"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_y6CIwLZhEeqtQq7a9RjYuw" name="collisionSimulatorEdits" type="_7tacQLWYEequbYbB8vO1tA"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_GtjDsLWrEequbYbB8vO1tA" name="advance">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_GtjDsbWrEequbYbB8vO1tA" name="currentTime">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_GtjDsrWrEequbYbB8vO1tA" name="timeStep">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_GtjDs7WrEequbYbB8vO1tA" name="particles" type="_arxjMLTbEeqdeYqAiwtBag"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_mN6NwLWYEequbYbB8vO1tA" name="GravitySimulator">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_XViM0LWvEequbYbB8vO1tA" name="advance">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_hTUEkLWvEequbYbB8vO1tA" name="currentTime">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_jJoF8LWvEequbYbB8vO1tA" name="timeStep">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_l16tELWvEequbYbB8vO1tA" name="particles" type="_arxjMLTbEeqdeYqAiwtBag">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4TOV4LWvEequbYbB8vO1tA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_4TSnULWvEequbYbB8vO1tA" value="*"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_qQn90LWvEequbYbB8vO1tA" type="_7-fusLZoEeqtQq7a9RjYuw" direction="return">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_2UGWwLWvEequbYbB8vO1tA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_2UKoMLWvEequbYbB8vO1tA" value="*"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Enumeration" xmi:id="_-e6NELZUEeqtQq7a9RjYuw" name="GravitySimulatorImplementation">
+      <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="___q1MLZUEeqtQq7a9RjYuw" name="DIRECT_INTEGRATION"/>
+      <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_BbO0QLZVEeqtQq7a9RjYuw" name="BARNES_HUT"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_XB2EgLWeEequbYbB8vO1tA" name="DirectIntegrationGravitySimulator">
+      <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_xR7QoLWfEequbYbB8vO1tA" client="_XB2EgLWeEequbYbB8vO1tA" supplier="_mN6NwLWYEequbYbB8vO1tA" contract="_mN6NwLWYEequbYbB8vO1tA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_T6s38LWfEequbYbB8vO1tA" name="BarnesHutGravitySimulator">
+      <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_woB_ELWfEequbYbB8vO1tA" client="_T6s38LWfEequbYbB8vO1tA" supplier="_mN6NwLWYEequbYbB8vO1tA" contract="_mN6NwLWYEequbYbB8vO1tA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_5ZYkILWYEequbYbB8vO1tA" name="CollisionSimulator">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_KUVx8LWwEequbYbB8vO1tA" name="advance">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_KUVx8bWwEequbYbB8vO1tA" name="particleSteps" type="_7-fusLZoEeqtQq7a9RjYuw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_bS6z4LZpEeqtQq7a9RjYuw"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_bS93MLZpEeqtQq7a9RjYuw" value="*"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Enumeration" xmi:id="_owEiELZUEeqtQq7a9RjYuw" name="CollisionSimulatorImplementation">
+      <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_rl0nMLZUEeqtQq7a9RjYuw" name="NO_INTERACTION"/>
+      <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_u11mcLZUEeqtQq7a9RjYuw" name="ELASTIC"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ebt1ELWeEequbYbB8vO1tA" name="NoInteractionCollisionSimulator">
+      <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_J6pIQLWfEequbYbB8vO1tA" client="_ebt1ELWeEequbYbB8vO1tA" supplier="_5ZYkILWYEequbYbB8vO1tA" contract="_5ZYkILWYEequbYbB8vO1tA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_CV3IMLWfEequbYbB8vO1tA" name="ElasticCollisionSimulator">
+      <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_IrGL8LWfEequbYbB8vO1tA" client="_CV3IMLWfEequbYbB8vO1tA" supplier="_5ZYkILWYEequbYbB8vO1tA" contract="_5ZYkILWYEequbYbB8vO1tA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_arxjMLTbEeqdeYqAiwtBag" name="Particle">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="__O5pILZgEeqtQq7a9RjYuw" name="massEdits" type="_Giu8ELUBEeq0vdCCkF6_mw"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_BwxI8LZhEeqtQq7a9RjYuw" name="radiusEdits" type="_Giu8ELUBEeq0vdCCkF6_mw"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_EpZi8LZhEeqtQq7a9RjYuw" name="kinematicEdits" type="_PTgDkLUAEeq0vdCCkF6_mw"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_JBtnALZhEeqtQq7a9RjYuw" name="kinematicSteps" type="_snioULWjEequbYbB8vO1tA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_snioULWjEequbYbB8vO1tA" name="NestedKinematicTimeSeries">
+      <templateBinding xmi:type="uml:TemplateBinding" xmi:id="_J6RikLWkEequbYbB8vO1tA" signature="_2dmqYLTmEeqdeYqAiwtBag">
+        <parameterSubstitution xmi:type="uml:TemplateParameterSubstitution" xmi:id="_PIes0LWkEequbYbB8vO1tA" actual="_PTgDkLUAEeq0vdCCkF6_mw" formal="_3KK1cLTmEeqdeYqAiwtBag"/>
+      </templateBinding>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_PTgDkLUAEeq0vdCCkF6_mw" name="KinematicTimeSeries">
+      <templateBinding xmi:type="uml:TemplateBinding" xmi:id="_65H0oLUAEeq0vdCCkF6_mw" signature="_2dmqYLTmEeqdeYqAiwtBag">
+        <parameterSubstitution xmi:type="uml:TemplateParameterSubstitution" xmi:id="_DAHw8LUBEeq0vdCCkF6_mw" actual="_9pbs8LWsEequbYbB8vO1tA" formal="_3KK1cLTmEeqdeYqAiwtBag"/>
+      </templateBinding>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_vPQ4QLZCEeq7d7Pzrd8Ivg" name="TimeStampedKinematic">
+      <templateBinding xmi:type="uml:TemplateBinding" xmi:id="_38cq0LZCEeq7d7Pzrd8Ivg" signature="_uUvF0LTmEeqdeYqAiwtBag">
+        <parameterSubstitution xmi:type="uml:TemplateParameterSubstitution" xmi:id="_8D6PcLZCEeq7d7Pzrd8Ivg" actual="_9pbs8LWsEequbYbB8vO1tA" formal="_u-BTYLTmEeqdeYqAiwtBag"/>
+      </templateBinding>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Giu8ELUBEeq0vdCCkF6_mw" name="NumberTimeSeries">
+      <templateBinding xmi:type="uml:TemplateBinding" xmi:id="_IGi4MLUBEeq0vdCCkF6_mw" signature="_2dmqYLTmEeqdeYqAiwtBag">
+        <parameterSubstitution xmi:type="uml:TemplateParameterSubstitution" xmi:id="_KvvvELUBEeq0vdCCkF6_mw" formal="_3KK1cLTmEeqdeYqAiwtBag">
+          <actual xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </parameterSubstitution>
+      </templateBinding>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_sOugsLWYEequbYbB8vO1tA" name="GravitySimulatorTimeSeries">
+      <templateBinding xmi:type="uml:TemplateBinding" xmi:id="_BAxMQLWZEequbYbB8vO1tA" signature="_2dmqYLTmEeqdeYqAiwtBag">
+        <parameterSubstitution xmi:type="uml:TemplateParameterSubstitution" xmi:id="_FfA5MLWZEequbYbB8vO1tA" actual="_mN6NwLWYEequbYbB8vO1tA" formal="_3KK1cLTmEeqdeYqAiwtBag"/>
+      </templateBinding>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_7tacQLWYEequbYbB8vO1tA" name="CollisionSimulatorTimeSeries">
+      <templateBinding xmi:type="uml:TemplateBinding" xmi:id="_Mip7ELWZEequbYbB8vO1tA" signature="_2dmqYLTmEeqdeYqAiwtBag">
+        <parameterSubstitution xmi:type="uml:TemplateParameterSubstitution" xmi:id="_SjHosLWZEequbYbB8vO1tA" actual="_5ZYkILWYEequbYbB8vO1tA" formal="_3KK1cLTmEeqdeYqAiwtBag"/>
+      </templateBinding>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_sAi1oLTmEeqdeYqAiwtBag" name="TimeStamped">
+      <ownedTemplateSignature xmi:type="uml:RedefinableTemplateSignature" xmi:id="_uUvF0LTmEeqdeYqAiwtBag" name="RedefinableTemplateSignature1" parameter="_u-BTYLTmEeqdeYqAiwtBag">
+        <ownedParameter xmi:type="uml:ClassifierTemplateParameter" xmi:id="_u-BTYLTmEeqdeYqAiwtBag" parameteredElement="_yPOlcLTmEeqdeYqAiwtBag"/>
+      </ownedTemplateSignature>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_yPOlcLTmEeqdeYqAiwtBag" name="T1" templateParameter="_u-BTYLTmEeqdeYqAiwtBag"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_0hm3wLTmEeqdeYqAiwtBag" name="TimeSeries">
+      <ownedTemplateSignature xmi:type="uml:RedefinableTemplateSignature" xmi:id="_2dmqYLTmEeqdeYqAiwtBag" name="TimeSeriesTemplateSignature" parameter="_3KK1cLTmEeqdeYqAiwtBag">
+        <ownedParameter xmi:type="uml:ClassifierTemplateParameter" xmi:id="_3KK1cLTmEeqdeYqAiwtBag" parameteredElement="__FSR4LTmEeqdeYqAiwtBag"/>
+      </ownedTemplateSignature>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_o4jc07WdEequbYbB8vO1tA" name="series" type="_sAi1oLTmEeqdeYqAiwtBag" association="_o4jc0LWdEequbYbB8vO1tA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_o4kD4LWdEequbYbB8vO1tA"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_o4kD4bWdEequbYbB8vO1tA" value="*"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="__FSR4LTmEeqdeYqAiwtBag" name="T2" templateParameter="_3KK1cLTmEeqdeYqAiwtBag"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_o4jc0LWdEequbYbB8vO1tA" name="series" memberEnd="_o4jc07WdEequbYbB8vO1tA _o4kD4rWdEequbYbB8vO1tA">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_o4jc0bWdEequbYbB8vO1tA" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_o4jc0rWdEequbYbB8vO1tA" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <templateBinding xmi:type="uml:TemplateBinding" xmi:id="_z1RCALWdEequbYbB8vO1tA" signature="_uUvF0LTmEeqdeYqAiwtBag">
+        <parameterSubstitution xmi:type="uml:TemplateParameterSubstitution" xmi:id="_4ySVoLWdEequbYbB8vO1tA" actual="__FSR4LTmEeqdeYqAiwtBag" formal="_u-BTYLTmEeqdeYqAiwtBag"/>
+      </templateBinding>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_o4kD4rWdEequbYbB8vO1tA" name="timeseries" type="_0hm3wLTmEeqdeYqAiwtBag" association="_o4jc0LWdEequbYbB8vO1tA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_9pbs8LWsEequbYbB8vO1tA" name="Kinematic">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_DF0dIrWtEequbYbB8vO1tA" name="vector" type="_Mt_Z4LUAEeq0vdCCkF6_mw" association="_DFz2ELWtEequbYbB8vO1tA"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_G6-JwrWtEequbYbB8vO1tA" name="vector" type="_Mt_Z4LUAEeq0vdCCkF6_mw" association="_G69isLWtEequbYbB8vO1tA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_DFz2ELWtEequbYbB8vO1tA" name="position" memberEnd="_DF0dIrWtEequbYbB8vO1tA _DF0dJbWtEequbYbB8vO1tA">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_DF0dILWtEequbYbB8vO1tA" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_DF0dIbWtEequbYbB8vO1tA" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_DF0dJbWtEequbYbB8vO1tA" name="kinematic" type="_9pbs8LWsEequbYbB8vO1tA" association="_DFz2ELWtEequbYbB8vO1tA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_G69isLWtEequbYbB8vO1tA" name="velocity" memberEnd="_G6-JwrWtEequbYbB8vO1tA _G6-w0bWtEequbYbB8vO1tA">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_G6-JwLWtEequbYbB8vO1tA" source="org.eclipse.papyrus">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_G6-JwbWtEequbYbB8vO1tA" key="nature" value="UML_Nature"/>
+      </eAnnotations>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_G6-w0bWtEequbYbB8vO1tA" name="kinematic" type="_9pbs8LWsEequbYbB8vO1tA" association="_G69isLWtEequbYbB8vO1tA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Mt_Z4LUAEeq0vdCCkF6_mw" name="Vector">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_C4Wp4LWiEequbYbB8vO1tA" name="x">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_FQx50LWiEequbYbB8vO1tA" name="y">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_7-fusLZoEeqtQq7a9RjYuw" name="PendingParticleStep">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_NZvdkLZpEeqtQq7a9RjYuw" name="particle" type="_arxjMLTbEeqdeYqAiwtBag"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_P-BYMLZpEeqtQq7a9RjYuw" name="kinematics" type="_PTgDkLUAEeq0vdCCkF6_mw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ehSPULjEEeqNQZA9EX_8Xg" name="ParticleEdit"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ookTQLjCEeqNQZA9EX_8Xg" name="ParticleCreateEdit"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ZrNXkLZbEeqtQq7a9RjYuw" name="ExistingParticleEdit">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_TYVhwLjAEeqNQZA9EX_8Xg" name="particle" type="_arxjMLTbEeqdeYqAiwtBag"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_dZbzQLjAEeqNQZA9EX_8Xg" name="MassEdit">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_yvaAYLjCEeqNQZA9EX_8Xg" name="mass">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_eIvJQLjAEeqNQZA9EX_8Xg" name="RadiusEdit">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_AK2R0LjDEeqNQZA9EX_8Xg" name="radius">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_hcNsMLjAEeqNQZA9EX_8Xg" name="PositionEdit">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_EMtkwLjDEeqNQZA9EX_8Xg" name="position" type="_Mt_Z4LUAEeq0vdCCkF6_mw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_iYxbELjAEeqNQZA9EX_8Xg" name="VelocityEdit">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_Q7fkgLjDEeqNQZA9EX_8Xg" name="velocity" type="_Mt_Z4LUAEeq0vdCCkF6_mw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_jJJvILjAEeqNQZA9EX_8Xg" name="DeleteEdit"/>
+    <packagedElement xmi:type="uml:Realization" xmi:id="_F0TiwLjFEeqNQZA9EX_8Xg" client="_ookTQLjCEeqNQZA9EX_8Xg" supplier="_ehSPULjEEeqNQZA9EX_8Xg"/>
+    <packagedElement xmi:type="uml:Realization" xmi:id="_YmqOgLjFEeqNQZA9EX_8Xg" client="_ZrNXkLZbEeqtQq7a9RjYuw" supplier="_ehSPULjEEeqNQZA9EX_8Xg"/>
+    <packagedElement xmi:type="uml:Realization" xmi:id="_1ZbokLjAEeqNQZA9EX_8Xg" client="_dZbzQLjAEeqNQZA9EX_8Xg" supplier="_ZrNXkLZbEeqtQq7a9RjYuw"/>
+    <packagedElement xmi:type="uml:Realization" xmi:id="_2TL7ELjAEeqNQZA9EX_8Xg" client="_eIvJQLjAEeqNQZA9EX_8Xg" supplier="_ZrNXkLZbEeqtQq7a9RjYuw"/>
+    <packagedElement xmi:type="uml:Realization" xmi:id="_22mKILjAEeqNQZA9EX_8Xg" client="_hcNsMLjAEeqNQZA9EX_8Xg" supplier="_ZrNXkLZbEeqtQq7a9RjYuw"/>
+    <packagedElement xmi:type="uml:Realization" xmi:id="_32KJsLjAEeqNQZA9EX_8Xg" client="_iYxbELjAEeqNQZA9EX_8Xg" supplier="_ZrNXkLZbEeqtQq7a9RjYuw"/>
+    <packagedElement xmi:type="uml:Realization" xmi:id="_4b7wQLjAEeqNQZA9EX_8Xg" client="_jJJvILjAEeqNQZA9EX_8Xg" supplier="_ZrNXkLZbEeqtQq7a9RjYuw"/>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_6Ahy0LTLEeqOvcMoAia_lg">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_rRjgILTPEeqxPOjA5A4eFQ" source="PapyrusVersion">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_rRjgIbTPEeqxPOjA5A4eFQ" key="Version" value="0.0.1"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_rRjgIrTPEeqxPOjA5A4eFQ" key="Comment" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_rRjgI7TPEeqxPOjA5A4eFQ" key="Copyright" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_rRjgJLTPEeqxPOjA5A4eFQ" key="Date" value="2020-06-22"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_rRjgJbTPEeqxPOjA5A4eFQ" key="Author" value=""/>
+      </eAnnotations>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_P7uSQLnDEeqhFYEOShkASA">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_P80ecLnDEeqhFYEOShkASA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="2dks-angular.profile.uml#_lRGJ0bnCEeqhFYEOShkASA"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="2dks-angular.profile.uml#_gk9M0LTKEeqOvcMoAia_lg"/>
+    </profileApplication>
+  </uml:Model>
+  <model:AngularComponent xmi:id="_ayC7kLnDEeqhFYEOShkASA" base_Class="_CoUnsLTPEeqOvcMoAia_lg"/>
+  <model:AngularComponent xmi:id="_cvxzkLnDEeqhFYEOShkASA" base_Class="_MwK-QLTLEeqOvcMoAia_lg"/>
+  <model:AngularComponent xmi:id="_kTrC0LnDEeqhFYEOShkASA" base_Class="_GKREcLTPEeqOvcMoAia_lg"/>
+  <model:AngularService xmi:id="_rTZ1ELnDEeqhFYEOShkASA" base_Class="_PGdt8LTQEeqdeYqAiwtBag"/>
+</xmi:XMI>

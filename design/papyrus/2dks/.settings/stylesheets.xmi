@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="ASCII"?>
+<css:EmbeddedStyleSheet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:css="http://www.eclipse.org/papyrus/infra/gmfdiag/css" label="project-style" content="* {&#xA;    routing: Rectilinear;&#xA;}&#xA;Association > Label:sourceMultiplicity,&#xA;Association > Label:targetMultiplicity,&#xA;Association > Label:sourceRole,&#xA;Association > Label:targetRole {&#xA;&#x9;visible:false;&#xA;}&#xA;* {&#xA;    rulers.isDisplayingRulers: true;&#xA;}"/>

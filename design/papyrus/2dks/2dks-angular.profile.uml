@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Profile xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_gk9M0LTKEeqOvcMoAia_lg" name="model" metaclassReference="_zwYf4LTKEeqOvcMoAia_lg">
+  <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_3LxzQLTLEeqOvcMoAia_lg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Cp5cYLTMEeqOvcMoAia_lg" source="PapyrusVersion">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Cp5cYbTMEeqOvcMoAia_lg" key="Version" value="0.0.0"/>
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Cp5cYrTMEeqOvcMoAia_lg" key="Comment" value="&lt;undefined>"/>
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Cp5cY7TMEeqOvcMoAia_lg" key="Copyright" value=""/>
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Cp5cZLTMEeqOvcMoAia_lg" key="Date" value=""/>
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Cp5cZbTMEeqOvcMoAia_lg" key="Author" value="&lt;undefined>"/>
+    </eAnnotations>
+    <contents xmi:type="ecore:EPackage" xmi:id="_lRGJ0bnCEeqhFYEOShkASA" name="model" nsURI="http:///schemas/model/_lRGJ0LnCEeqhFYEOShkASA/3" nsPrefix="model">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_lRGJ3LnCEeqhFYEOShkASA" source="PapyrusVersion">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_lRGJ3bnCEeqhFYEOShkASA" key="Version" value="0.0.2"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_lRGJ3rnCEeqhFYEOShkASA" key="Comment" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_lRGJ37nCEeqhFYEOShkASA" key="Copyright" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_lRGJ4LnCEeqhFYEOShkASA" key="Date" value="2020-06-29"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_lRGJ4bnCEeqhFYEOShkASA" key="Author" value=""/>
+      </eAnnotations>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_lRGJ0rnCEeqhFYEOShkASA" name="AngularComponent">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_lRGJ07nCEeqhFYEOShkASA" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_2_03YLTKEeqOvcMoAia_lg"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_lRGJ1LnCEeqhFYEOShkASA" name="base_Class" ordered="false">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Class"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_lRGJ1rnCEeqhFYEOShkASA" name="AngularService">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_lRGJ17nCEeqhFYEOShkASA" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_4c-K0LTKEeqOvcMoAia_lg"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_lRGJ2LnCEeqhFYEOShkASA" name="base_Class" ordered="false">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Class"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+    </contents>
+    <contents xmi:type="ecore:EPackage" xmi:id="_bXYSsLnCEeqhFYEOShkASA" name="model" nsURI="http:///schemas/model/_bXXEkLnCEeqhFYEOShkASA/2" nsPrefix="model">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_bXY5wrnCEeqhFYEOShkASA" source="PapyrusVersion">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_bXY5w7nCEeqhFYEOShkASA" key="Version" value="0.0.1"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_bXY5xLnCEeqhFYEOShkASA" key="Comment" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_bXY5xbnCEeqhFYEOShkASA" key="Copyright" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_bXY5xrnCEeqhFYEOShkASA" key="Date" value="2020-06-29"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_bXY5x7nCEeqhFYEOShkASA" key="Author" value=""/>
+      </eAnnotations>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_bXYSsbnCEeqhFYEOShkASA" name="AngularComponent">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_bXYSsrnCEeqhFYEOShkASA" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_2_03YLTKEeqOvcMoAia_lg"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bXYSs7nCEeqhFYEOShkASA" name="base_Class" ordered="false">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Class"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_bXYStbnCEeqhFYEOShkASA" name="AngularService">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_bXYStrnCEeqhFYEOShkASA" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_4c-K0LTKEeqOvcMoAia_lg"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bXYSt7nCEeqhFYEOShkASA" name="base_Class" ordered="false">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Class"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+    </contents>
+    <contents xmi:type="ecore:EPackage" xmi:id="_FpcWsbTMEeqOvcMoAia_lg" name="model" nsURI="http:///schemas/model/_FpcWsLTMEeqOvcMoAia_lg/1" nsPrefix="model">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Fpc9wbTMEeqOvcMoAia_lg" source="PapyrusVersion">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Fpc9wrTMEeqOvcMoAia_lg" key="Version" value="0.0.1"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Fpc9w7TMEeqOvcMoAia_lg" key="Comment" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Fpc9xLTMEeqOvcMoAia_lg" key="Copyright" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Fpc9xbTMEeqOvcMoAia_lg" key="Date" value="2020-06-22"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Fpc9xrTMEeqOvcMoAia_lg" key="Author" value=""/>
+      </eAnnotations>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_FpcWsrTMEeqOvcMoAia_lg" name="AngularComponentt">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_FpcWs7TMEeqOvcMoAia_lg" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_2_03YLTKEeqOvcMoAia_lg"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_FpcWtLTMEeqOvcMoAia_lg" name="base_Class" ordered="false">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Class"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_FpcWtrTMEeqOvcMoAia_lg" name="AngularService">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_FpcWt7TMEeqOvcMoAia_lg" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_4c-K0LTKEeqOvcMoAia_lg"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_FpcWuLTMEeqOvcMoAia_lg" name="base_Class" ordered="false">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Class"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+    </contents>
+    <contents xmi:type="ecore:EPackage" xmi:id="_3LxzQbTLEeqOvcMoAia_lg" name="model" nsURI="http:///schemas/model/_3LwlILTLEeqOvcMoAia_lg/0" nsPrefix="model">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_3LyaUrTLEeqOvcMoAia_lg" source="PapyrusVersion">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_3LyaU7TLEeqOvcMoAia_lg" key="Version" value="0.0.1"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_3LyaVLTLEeqOvcMoAia_lg" key="Comment" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_3LyaVbTLEeqOvcMoAia_lg" key="Copyright" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_3LyaVrTLEeqOvcMoAia_lg" key="Date" value="2020-06-22"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_3LyaV7TLEeqOvcMoAia_lg" key="Author" value=""/>
+      </eAnnotations>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_3LxzQrTLEeqOvcMoAia_lg" name="AngularComponent">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_3LxzQ7TLEeqOvcMoAia_lg" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_2_03YLTKEeqOvcMoAia_lg"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_3LxzRLTLEeqOvcMoAia_lg" name="base_Class" ordered="false">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Class"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_3LxzRrTLEeqOvcMoAia_lg" name="AngularService">
+        <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_3LxzR7TLEeqOvcMoAia_lg" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_4c-K0LTKEeqOvcMoAia_lg"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_3LxzSLTLEeqOvcMoAia_lg" name="base_Class" ordered="false">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Class"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+    </contents>
+  </eAnnotations>
+  <elementImport xmi:type="uml:ElementImport" xmi:id="_zwYf4LTKEeqOvcMoAia_lg" alias="Class">
+    <importedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+  </elementImport>
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_gnx3ULTKEeqOvcMoAia_lg">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_gnx3UbTKEeqOvcMoAia_lg">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_METAMODELS/UML.metamodel.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_2_03YLTKEeqOvcMoAia_lg" name="AngularComponent">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="__7JzobTKEeqOvcMoAia_lg" name="base_Class" association="__7IlgLTKEeqOvcMoAia_lg">
+      <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="__7JzorTKEeqOvcMoAia_lg"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_4c-K0LTKEeqOvcMoAia_lg" name="AngularService">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_Ao1ZArTLEeqOvcMoAia_lg" name="base_Class" association="_Ao1ZALTLEeqOvcMoAia_lg">
+      <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Ao1ZA7TLEeqOvcMoAia_lg"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Extension" xmi:id="__7IlgLTKEeqOvcMoAia_lg" name="E_AngularComponent_Class1" memberEnd="__7JzoLTKEeqOvcMoAia_lg __7JzobTKEeqOvcMoAia_lg">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="__7JzoLTKEeqOvcMoAia_lg" name="extension_AngularComponent" type="_2_03YLTKEeqOvcMoAia_lg" aggregation="composite" association="__7IlgLTKEeqOvcMoAia_lg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Extension" xmi:id="_Ao1ZALTLEeqOvcMoAia_lg" name="E_AngularService_Class7" memberEnd="_Ao1ZAbTLEeqOvcMoAia_lg _Ao1ZArTLEeqOvcMoAia_lg">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_Ao1ZAbTLEeqOvcMoAia_lg" name="extension_AngularService" type="_4c-K0LTKEeqOvcMoAia_lg" aggregation="composite" association="_Ao1ZALTLEeqOvcMoAia_lg"/>
+  </packagedElement>
+</uml:Profile>
