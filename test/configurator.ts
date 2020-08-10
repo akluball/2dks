@@ -1,0 +1,3 @@
+if (process.env.JASMINE_DEFAULT_TIMEOUT_INTERVAL) {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = Number.parseInt(process.env.JASMINE_DEFAULT_TIMEOUT_INTERVAL);
+}

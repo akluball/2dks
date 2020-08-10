@@ -1,0 +1,26 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "baseUrl": "..",
+        "rootDir": "..",
+        "outDir": "../build",
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "target": "ES2015",
+        "lib": [
+            "ES2015",
+            "DOM"
+        ],
+        "strict": true,
+        "sourceMap": true
+    },
+    "include": [
+        "configurator.ts",
+        "**/*.test.ts"
+    ],
+    "references": [
+        {
+            "path": "../config"
+        }
+    ]
+}

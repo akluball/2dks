@@ -1,0 +1,33 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "pwa-chrome",
+            "request": "launch",
+            "name": "chrome launch",
+            "webRoot": "${workspaceFolder}/build/dist",
+            "url": "http://localhost:8080/index.html"
+        },
+        {
+            "type": "pwa-chrome",
+            "request": "attach",
+            "name": "chrome attach",
+            "port": 9222,
+            "webRoot": "${workspaceFolder}/build/dist"
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "test launch",
+            "console": "integratedTerminal",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "test"
+            ],
+            "env": {
+                "JASMINE_DEFAULT_TIMEOUT_INTERVAL": "600000",
+                "NODE_ENV": "development"
+            }
+        }
+    ]
+}

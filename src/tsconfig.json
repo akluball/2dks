@@ -1,0 +1,26 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "baseUrl": "..",
+        "rootDir": ".",
+        "outDir": "../build/ngc-out",
+        "module": "ES2020",
+        "moduleResolution": "node",
+        "target": "ES2015",
+        "lib": [
+            "ES2018",
+            "DOM"
+        ],
+        "strict": true,
+        "declaration": false,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "downlevelIteration": true
+    },
+    "files": [ "main.ts" ],
+    "angularCompilerOptions": {
+        "enableIvy": true,
+        "fullTemplateTypeCheck": true,
+        "strictInjectionParameters": true
+    }
+}

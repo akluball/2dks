@@ -1,0 +1,20 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "allowJs": true,
+        "baseUrl": "..",
+        "rootDir": "..",
+        "outDir": "../build",
+        "module": "CommonJS",
+        "target": "ES2015",
+        "lib": [
+            "ES2015"
+        ],
+        "composite": true,
+        "sourceMap": true
+    },
+    "files": [
+        "index.js",
+        "../util.js"
+    ]
+}
