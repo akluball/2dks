@@ -1,0 +1,16 @@
+dist: trusty
+
+language: node_js
+node_js:
+  - 12
+
+services:
+  - docker
+
+before-script:
+  - npm run lint
+  - npm run test-setup
+
+after-script:
+  - npm run test-cleanup
+  - npm run clean
