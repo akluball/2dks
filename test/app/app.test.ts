@@ -1,50 +1,42 @@
-import { request } from 'http';
-import { Builder, By, until, ThenableWebDriver } from 'selenium-webdriver';
-import { Options } from 'selenium-webdriver/chrome';
-import * as config from '../../config';
+import { By } from 'selenium-webdriver';
+import { Context, setup, cleanup } from '../context';
+import { getApp } from '../element-getters';
+import {
+    getLeftX,
+    getParentLeftX,
+    getParentTopY,
+    getTopY,
+    getWidth,
+    getParentWidth,
+    getParentHeight,
+    getHeight
+} from '../util';
 
-const timeoutMillis = 2000;
+describe('app component', function () {
+    beforeEach(setup);
+    afterEach(cleanup);
 
-interface Context {
-    driver: ThenableWebDriver
-}
+    it('contains simulation component', async function(this: Context) {
+        await getApp(this.driver).findElement(By.xpath('./simulation'));
+    });
 
-beforeEach(async function(this: Context) {
-    const options = new Options();
-    if (process.env.NODE_ENV === 'development') {
-        options.headless()
-               .addArguments('--remote-debugging-address=0.0.0.0')
-               .addArguments(`--remote-debugging-port=${config.selenium.browserDebugPublishPort}`)
-               .addArguments('--force-devtools-available');
-    }
-    this.driver = new Builder().forBrowser('chrome')
-                               .usingServer(`http://localhost:${config.selenium.publishPort}`)
-                               .setChromeOptions(options)
-                               .build();
-    await this.driver.get(`http://${config.app.container}/index.html`);
-});
+    it('has same left x as parent', async function(this: Context) {
+        const app = getApp(this.driver);
+        expect(await getLeftX(app)).toBe(await getParentLeftX(app));
+    });
 
-afterEach(async function (this: Context) {
-    if (process.env.NODE_ENV === 'development') {
-        const sessionId = (await this.driver.getSession()).getId();
-        await new Promise(resolve => {
-            const uri = `http://localhost:${config.selenium.publishPort}/session/${sessionId}`;
-            const req = request(uri, { method: 'DELETE' });
-            req.end(() => {
-                req.socket.unref();
-                resolve();
-            });
-        });
-    } else {
-        await this.driver.quit();
-    }
-});
+    it('has same top y as parent', async function(this: Context) {
+        const app = getApp(this.driver);
+        expect(await getTopY(app)).toBe(await getParentTopY(app));
+    });
 
-it('title', async function(this: Context) {
-    await this.driver.wait(until.titleIs('2-Dimensional Kinetics Simulator'), timeoutMillis);
-});
+    it('has same width as parent', async function(this: Context) {
+        const app = getApp(this.driver);
+        expect(await getWidth(app)).toBe(await getParentWidth(app));
+    });
 
-it('main', async function(this: Context) {
-    const main = await this.driver.wait(until.elementLocated(By.tagName('main')), timeoutMillis);
-    await this.driver.wait(until.elementTextMatches(main, /\s*2dks placeholder\s*/), timeoutMillis);
+    it('has same height as parent', async function(this: Context) {
+        const app = getApp(this.driver);
+        expect(await getHeight(app)).toBe(await getParentHeight(app));
+    });
 });

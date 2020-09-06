@@ -15,8 +15,8 @@
         "sourceMap": true
     },
     "include": [
-        "configurator.ts",
-        "**/*.test.ts"
+        "*.ts",
+        "**/*.ts"
     ],
     "references": [
         {

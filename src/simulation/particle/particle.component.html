@@ -1,0 +1,11 @@
+<svg:circle
+    tabindex="0"
+    fill="black"
+    [attr.cx]="particle.x"
+    [attr.cy]="particle.y"
+    [attr.r]="particle.radius"
+    (mouseenter)="circleHover.emit()"
+    (mouseleave)="circleDehover.emit()"
+    (focus)="circleFocus.emit()"
+    (blur)="circleBlur.emit()"
+></svg:circle>

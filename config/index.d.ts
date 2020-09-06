@@ -6,4 +6,6 @@ export namespace app {
 export namespace selenium {
     const publishPort: string;
     const browserDebugPublishPort: string;
+    const width: number;
+    const height: number;
 }

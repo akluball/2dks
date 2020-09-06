@@ -51,6 +51,7 @@ target.build = async function() {
     exec(`${bin.ngc} ${ngcOptions.join(' ')} --project ${root('src')}`);
     exec(`${bin.rollup} --config ${root('rollup.config.js')}`);
     cp(root('src', 'index.html'), root('build', 'dist', 'index.html'));
+    cp(root('src', 'style.css'), root('build', 'dist', 'style.css'));
     if (env.NODE_ENV !== 'development') {
         minify(main);
         minify(polyfills);
@@ -68,24 +69,25 @@ target.clean = function() {
 target.lint = function(options) {
     set('+e');
     let code;
+    const base = [
+        bin.eslint,
+        '--env', 'es6',
+        '--max-warnings', 0,
+        '--color',
+        ...options
+    ];
     {
         const command = [
-            bin.eslint,
-            ...options,
+            ...base,
             '--env', 'browser',
-            '--env', 'es6',
-            '--color',
             root('src'),
         ].join(' ');
         code = exec(command).code;
     }
     {
         const command = [
-            bin.eslint,
-            ...options,
+            ...base,
             '--env', 'node',
-            '--env', 'es6',
-            '--color',
             root('test'),
             root('config'),
             root('util.js'),
@@ -143,6 +145,7 @@ async function seleniumHealthcheck() {
     if (env.NODE_ENV === 'development') {
         const options = new chrome.Options().headless()
                                             .detachDriver(true)
+                                            .windowSize({ width: config.selenium.width, height: config.selenium.height })
                                             .addArguments('--remote-debugging-address=0.0.0.0')
                                             .addArguments(`--remote-debugging-port=${config.selenium.browserDebugPublishPort}`)
                                             .addArguments('--force-devtools-available');
@@ -236,4 +239,10 @@ target.testDev = async function() {
                               rollupWatch.stderr,
                               tscWatch.stdout,
                               tscWatch.stderr);
+};
+
+target.testLifecycle = async function() {
+    onExit(target.testCleanup);
+    await target.testSetup();
+    target.test();
 };

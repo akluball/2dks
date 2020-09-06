@@ -23,7 +23,8 @@
         "test-setup": "node Makefile.js testSetup",
         "test": "node Makefile.js test",
         "test-cleanup": "node Makefile.js testCleanup",
-        "test:dev": "node Makefile.js testDev"
+        "test:dev": "node Makefile.js testDev",
+        "test:lifecycle": "node Makefile.js testLifecycle"
     },
     "devDependencies": {
         "@angular-devkit/build-optimizer": "^0.1000.5",

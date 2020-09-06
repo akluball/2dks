@@ -12,18 +12,14 @@
         "curly": [ "error", "all" ],
         "dot-location": [ "error", "property" ],
         "eqeqeq": [ "error", "always" ],
-        "no-magic-numbers": [ "error", {
-            "ignoreArrayIndexes": true,
-            "ignore": [ 0, 1, 2 ]
-        } ],
         "no-return-assign": [ "error" ],
         "no-return-await": [ "error" ],
         "prefer-regex-literals": [ "error" ],
-        "no-undefined": [ "error" ],
         "array-bracket-newline": [ "error", "consistent" ],
         "array-bracket-spacing": [ "error", "always" ],
         "block-spacing": [ "error" ],
         "brace-style": [ "error", "1tbs" ],
+        "eol-last": [ "error", "always" ],
         "indent": [ "error", 4, {
             "SwitchCase": 1,
             "VariableDeclarator": "first",

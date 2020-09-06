@@ -7,60 +7,60 @@ Requirements:
 ## Usage
 
 build
-```sh
+```shell script
 npm run build
 ```
 
 start
-```sh
+```shell script
 npm start
 ```
 
 open
-```sh
+```shell script
 npm run open
 ```
 
 stop
-```sh
+```shell script
 npm stop
 ```
 
 ## Test
 
 setup
-```sh
+```shell script
 npm run test-setup
 ```
 
 test
-```
+```shell script
 npm test
 ```
 
 cleanup
-```sh
+```shell script
 npm run test-cleanup
 ```
 
 dev mode testing
-```
+```shell script
 npm run test:dev
 ```
 
 ## Maintenance
 
 lint
-```sh
+```shell script
 npm run lint
 ```
 
 lint fix
-```sh
+```shell script
 npm run lint:fix
 ```
 
 clean
-```sh
+```shell script
 npm run clean
 ```

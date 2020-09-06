@@ -1,0 +1,44 @@
+<svg
+    #svg
+    (mousedown)="onPress($event.target, { x: $event.clientX, y: $event.clientY })"
+    (mousemove)="onMove({ x: $event.clientX, y: $event.clientY })"
+    (mouseup)="onRelease({ x: $event.clientX, y: $event.clientY })"
+    (mouseleave)="onLeave()"
+>
+    <g
+        attr.transform="scale(1, -1) translate(0, {{-svg.height.baseVal.value}})"
+    >
+        <g
+            particle-component
+            *ngFor="let particle of service.readonlyParticles"
+            [particle]="particle"
+            (circleHover)="onCircleHover(particle)"
+            (circleDehover)="onCircleDehover(particle)"
+            (circleFocus)="onCircleFocus(particle)"
+            (circleBlur)="onCircleBlur(particle)"
+        />
+        <circle
+            *ngIf="pendingParticle"
+            [attr.cx]="pendingParticle.cx"
+            [attr.cy]="pendingParticle.cy"
+            [attr.r]="pendingParticle.r"
+            [attr.fill]="pendingParticle.fill"
+        ></circle>
+    </g>
+</svg>
+<toolbar
+    (actionSelect)="action=$event"
+    (undo)="undo()"
+    (redo)="redo()"
+></toolbar>
+<particle-description
+    *ngIf="circleHover || circleFocus || descriptionHover || descriptionFocus"
+    [particle]="described"
+    [style.left.px]="described ? described.x + described.radius : 0"
+    [style.top.px]="described ? -described.y + svg.height.baseVal.value : 0"
+    [focus]="circleFocus || descriptionFocus"
+    (mouseenter)="descriptionHover = true"
+    (mouseleave)="descriptionHover = false"
+    (focusin)="descriptionFocus = true"
+    (focusout)="descriptionFocus = $event.currentTarget.contains($event.relatedTarget)"
+></particle-description>

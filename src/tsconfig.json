@@ -15,7 +15,8 @@
         "declaration": false,
         "experimentalDecorators": true,
         "importHelpers": true,
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "types": [ "node" ]
     },
     "files": [ "main.ts" ],
     "angularCompilerOptions": {

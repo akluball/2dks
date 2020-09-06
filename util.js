@@ -55,6 +55,7 @@ function onExit(cb) {
         process.on(event, err => {
             console.error(err);
             cb();
+            process.exitCode = 1;
         });
     });
 }

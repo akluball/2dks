@@ -1,0 +1,12 @@
+<div [class]="['toolbar_content', visible ? 'toolbar_content__visible' : 'toolbar_content__hidden']">
+    <select (input)="actionSelect.emit($event.target.value)">
+        <option></option>
+        <option [value]="Action.ADD_PARTICLE">add particle</option>
+    </select>
+    <button class="arial toolbar_history" value="undo" (click)="undo.emit()">{{ undoSymbol }}</button>
+    <button class="arial toolbar_history" value="redo" (click)="redo.emit()">{{ redoSymbol }}</button>
+</div>
+
+<div class="arial toolbar_toggle" (click)="toggle()">
+    {{ arrow }}
+</div>
