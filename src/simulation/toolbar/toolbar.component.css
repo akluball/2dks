@@ -35,7 +35,7 @@
     background-color: white;
 }
 
-.toolbar_history {
+.toolbar_content > button {
     font-weight: bold;
 }
 

@@ -2,43 +2,48 @@
     <tr>
         <th scope="row">position</th>
         <td *ngIf="focus; else positionElse">
-        (<input
-            #xInput
-            type="number"
-            [value]="particle.x"
-            [style.width.ch]="particle.x.toString().length + 1"
-            (input)="xInput.style.width = '' + (xInput.value.length + 1) + 'ch'"
-            (keyup.enter)="setPositionX(xInput.value); xInput.value = particle.x;"
-            (blur)="xInput.value = particle.x;"
-        >,<input
-            #yInput
-            type="number"
-            [value]="particle.y"
-            [style.width.ch]="particle.y.toString().length + 1"
-            (input)="yInput.style.width = '' + (yInput.value.length + 1) + 'ch'"
-            (keyup.enter)="setPositionY(yInput.value); yInput.value = particle.y;"
-            (blur)="yInput.value = particle.y;"
-        >)
+            (<number-edit
+                #positionXEdit
+                [value]="particle.positionX"
+                (edit)="setPositionX($event, positionXEdit)"
+            ></number-edit>,<number-edit
+                #positionYEdit
+                [value]="particle.positionY"
+                (edit)="setPositionY($event, positionYEdit)"
+            ></number-edit>)
         </td>
         <ng-template #positionElse>
-            <td>({{ particle.x }}, {{ particle.y }})</td>
+            <td>({{ particle.positionX }},{{ particle.positionY }})</td>
         </ng-template>
     </tr>
     <tr>
         <th scope="row">radius</th>
         <td *ngIf="focus; else radiusElse">
-            <input
-                #radiusInput
-                type="number"
+            <number-edit
+                #radiusEdit
                 [value]="particle.radius"
-                [style.width.ch]="particle.radius.toString().length + 1"
-                (input)="radiusInput.style.width = '' + (radiusInput.value.length + 1) + 'ch'"
-                (keyup.enter)="setRadius(radiusInput.value); radiusInput.value = particle.radius;"
-                (blur)="radiusInput.value = particle.radius;"
-            >
+                (edit)="setRadius($event, radiusEdit)"
+            ></number-edit>
         </td>
         <ng-template #radiusElse>
             <td>{{ particle.radius }}</td>
+        </ng-template>
+    </tr>
+    <tr>
+        <th scope="row">velocity</th>
+        <td *ngIf="focus; else velocityElse">
+            (<number-edit
+                #velocityXEdit
+                [value]="particle.velocityX"
+                (edit)="setVelocityX($event, velocityXEdit)"
+            ></number-edit>,<number-edit
+                #velocityYEdit
+                [value]="particle.velocityY"
+                (edit)="setVelocityY($event, velocityYEdit)"
+            ></number-edit>)
+        </td>
+        <ng-template #velocityElse>
+            <td>({{ particle.velocityX }},{{ particle.velocityY }})</td>
         </ng-template>
     </tr>
 </table>

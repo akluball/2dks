@@ -1,8 +1,8 @@
 import { Component, Input, HostBinding } from '@angular/core';
 import { SimulationService } from '../../simulation.service';
-import ReadonlyParticle from '../../model/ReadonlyParticle';
-
-const floatRegex = /^[-+]?\d+.?\d*$/;
+import ParticleSnapshot from '../../model/ParticleSnapshot';
+import * as symbol from '../../../symbol';
+import { NumberEditComponent } from 'src/simulation/number-edit/number-edit.component';
 
 @Component({
     selector: 'particle-description',
@@ -11,35 +11,47 @@ const floatRegex = /^[-+]?\d+.?\d*$/;
 })
 export class ParticleDescriptionComponent {
     @HostBinding('attr.tabindex') readonly tabindex = 0;
-    @Input() particle!: ReadonlyParticle;
+    @Input() particle!: ParticleSnapshot;
     @Input() focus!: boolean;
+    symbol = symbol;
 
     constructor(private service: SimulationService) {
     }
 
-    private isFloat(asString: string): boolean {
-        return floatRegex.test(asString);
-    }
-
-    setPositionX(asString: string): void {
-        if (this.isFloat(asString)) {
-            this.service.setPositionX(this.particle, parseFloat(asString));
+    setPositionX(positionX: number, numberEdit: NumberEditComponent): void {
+        this.service.setPositionX(this.particle, positionX);
+        if (this.particle.positionX === positionX) {
+            numberEdit.onEditSuccess();
         }
     }
 
-    setPositionY(asString: string): void {
-        if (this.isFloat(asString)) {
-            this.service.setPositionY(this.particle, parseFloat(asString));
+    setPositionY(positionY: number, numberEdit: NumberEditComponent): void {
+        this.service.setPositionY(this.particle, positionY);
+        if (this.particle.positionY === positionY) {
+            numberEdit.onEditSuccess();
         }
     }
 
-    setRadius(asString: string): void {
-        if (this.isFloat(asString)) {
-            const radius = Math.abs(parseFloat(asString));
-            if (radius === 0) {
-                return;
+    setRadius(radius: number, numberEdit: NumberEditComponent): void {
+        if (radius !== 0) {
+            this.service.setRadius(this.particle, Math.abs(radius));
+            if (this.particle.radius === radius) {
+                numberEdit.onEditSuccess();
             }
-            this.service.setRadius(this.particle, radius);
+        }
+    }
+
+    setVelocityX(velocityX: number, numberEdit: NumberEditComponent): void {
+        this.service.setVelocityX(this.particle, velocityX);
+        if (this.particle.velocityX === velocityX) {
+            numberEdit.onEditSuccess();
+        }
+    }
+
+    setVelocityY(velocityY: number, numberEdit: NumberEditComponent): void {
+        this.service.setVelocityY(this.particle, velocityY);
+        if (this.particle.velocityY === velocityY) {
+            numberEdit.onEditSuccess();
         }
     }
 }

@@ -1,0 +1,10 @@
+<input
+    #input
+    type="number"
+    [value]="value"
+    [style.width.ch]="width + 1"
+    [style.animation]="animation"
+    (input)="width = input.value.length"
+    (keyup.enter)="emitEdit(input.value); input.value = value"
+    (blur)="input.value = value; width = input.value.length"
+>

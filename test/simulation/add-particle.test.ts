@@ -12,7 +12,8 @@ import {
     getParticleCircle,
     getToolbarToggle,
     getPendingParticleCircle,
-    getPendingParticleCircles
+    getPendingParticleCircles,
+    getStepButton
 } from '../element-getters';
 import {
     getCenterX,
@@ -63,6 +64,15 @@ describe('add particle', function() {
 
         await relativeMove(this.driver, { x: 1 });
         expect(await getWidth(circle)).toBe(10);
+    });
+
+    it('velocity is 0', async function(this: Context) {
+        await selectAddParticleAction(this.driver);
+        await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
+        await getStepButton(this.driver).click();
+        const circle = await getParticleCircle(this.driver);
+        expect(await getCenterX(circle)).toBe(200);
+        expect(await getCenterY(circle)).toBe(200);
     });
 
     it('must have nonzero radius', async function(this: Context) {

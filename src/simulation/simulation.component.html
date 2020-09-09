@@ -10,7 +10,7 @@
     >
         <g
             particle-component
-            *ngFor="let particle of service.readonlyParticles"
+            *ngFor="let particle of service.particles"
             [particle]="particle"
             (circleHover)="onCircleHover(particle)"
             (circleDehover)="onCircleDehover(particle)"
@@ -30,12 +30,13 @@
     (actionSelect)="action=$event"
     (undo)="undo()"
     (redo)="redo()"
+    (step)="step()"
 ></toolbar>
 <particle-description
     *ngIf="circleHover || circleFocus || descriptionHover || descriptionFocus"
     [particle]="described"
-    [style.left.px]="described ? described.x + described.radius : 0"
-    [style.top.px]="described ? -described.y + svg.height.baseVal.value : 0"
+    [style.left.px]="described ? described.positionX + described.radius : 0"
+    [style.top.px]="described ? -described.positionY + svg.height.baseVal.value : 0"
     [focus]="circleFocus || descriptionFocus"
     (mouseenter)="descriptionHover = true"
     (mouseleave)="descriptionHover = false"

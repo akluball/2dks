@@ -1,8 +1,8 @@
 <svg:circle
     tabindex="0"
     fill="black"
-    [attr.cx]="particle.x"
-    [attr.cy]="particle.y"
+    [attr.cx]="particle.positionX"
+    [attr.cy]="particle.positionY"
     [attr.r]="particle.radius"
     (mouseenter)="circleHover.emit()"
     (mouseleave)="circleDehover.emit()"

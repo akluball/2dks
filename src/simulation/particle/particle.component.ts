@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import ReadonlyParticle from '../model/ReadonlyParticle';
+import ParticleSnapshot from '../model/ParticleSnapshot';
 
 @Component({
     selector: '[particle-component]',
@@ -7,7 +7,7 @@ import ReadonlyParticle from '../model/ReadonlyParticle';
     styleUrls: [ './particle.component.css' ]
 })
 export class ParticleComponent {
-    @Input() particle!: ReadonlyParticle;
+    @Input() particle!: ParticleSnapshot;
     @Output() circleHover = new EventEmitter<void>();
     @Output() circleDehover = new EventEmitter<void>();
     @Output() circleFocus = new EventEmitter<void>();

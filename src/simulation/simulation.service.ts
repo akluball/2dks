@@ -1,136 +1,148 @@
 import { Injectable } from '@angular/core';
-import Undo from './history/Undo';
-import Redo from './history/Redo';
-import { HistoryBuilder } from './history/History';
-import ReadonlyParticle from './model/ReadonlyParticle';
+import History from './history/History';
+import { UndoRedoBuilder } from './history/UndoRedo';
+import ParticleSnapshot from './model/ParticleSnapshot';
 import Simulation from './model/Simulation';
-import Vector from './model/Vector';
-import Particle from './model/Particle';
-
-class ReadonlyParticleImpl implements ReadonlyParticle {
-    constructor(readonly particle: Particle) {
-    }
-
-    get x(): number {
-        return this.particle.position.x;
-    }
-
-    get y(): number {
-        return this.particle.position.y;
-    }
-
-    get radius(): number {
-        return this.particle.radius;
-    }
-}
+import Vector, { distanceBetween } from './model/Vector';
 
 @Injectable()
 export class SimulationService {
-    private undos: Undo[] = [];
-    private redos: Redo[] = [];
+    private history = new History();
     private simulation = new Simulation();
-    private _readonlyParticles: ReadonlyParticle[] = [];
+    private particleSnapshots: ParticleSnapshot[] = [];
 
-    get readonlyParticles(): ReadonlyArray<ReadonlyParticle> {
-        return this._readonlyParticles;
+    get particles(): ReadonlyArray<ParticleSnapshot> {
+        return this.particleSnapshots;
     }
 
     undo(): void {
-        const redo = this.undos.pop()?.undo();
-        if (redo) {
-            this.redos.push(redo);
-        }
+        this.history.undo();
     }
 
     redo(): void {
-        const undo = this.redos.pop()?.redo();
-        if (undo) {
-            this.undos.push(undo);
-        }
+        this.history.redo();
+    }
+
+    step(): void {
+        this.simulation.step();
+        const undo = new UndoRedoBuilder()
+                                          .undoAction(this.simulation.stepBack.bind(this.simulation))
+                                          .redoAction(this.simulation.step.bind(this.simulation))
+                                          .build();
+        this.history.appendUndo(undo);
     }
 
     createParticle(cx: number, cy: number, r: number): void {
         const particle = this.simulation.createParticle(cx, cy, r);
         if (!particle) {
-            return undefined;
-        } else {
-            const readonlyParticle = new ReadonlyParticleImpl(particle);
-            this._readonlyParticles.push(readonlyParticle);
-            const undo = new HistoryBuilder()
-                                             .undoAction(this.removeParticle.bind(this, readonlyParticle))
-                                             .redoAction(this.addParticle.bind(this, readonlyParticle))
-                                             .build();
-            this.undos.push(undo);
+            return;
         }
+        this.particleSnapshots.push(particle);
+        const undo = new UndoRedoBuilder()
+                                          .undoAction(this.removeParticle.bind(this, particle))
+                                          .redoAction(this.addParticle.bind(this, particle))
+                                          .build();
+        this.history.appendUndo(undo);
     }
 
-    private removeParticle(readonlyParticle: ReadonlyParticle): void;
-    private removeParticle(readonlyParticle: ReadonlyParticleImpl): void {
-        const i = this._readonlyParticles.indexOf(readonlyParticle);
+    private addParticle(particle: ParticleSnapshot): void {
+        this.particleSnapshots.push(particle);
+        this.simulation.addParticle(particle);
+    }
+
+    private removeParticle(particle: ParticleSnapshot): void {
+        const i = this.particleSnapshots.indexOf(particle);
         if (i !== -1) {
-            this._readonlyParticles.splice(i, 1);
+            this.particleSnapshots.splice(i, 1);
         }
-        this.simulation.removeParticle(readonlyParticle.particle);
+        this.simulation.removeParticle(particle);
     }
 
-    private addParticle(readonlyParticle: ReadonlyParticle): void;
-    private addParticle(readonlyParticle: ReadonlyParticleImpl): void {
-        this._readonlyParticles.push(readonlyParticle);
-        this.simulation.addParticle(readonlyParticle.particle);
+    distanceToClosest(position: Vector): number {
+        let distance = Infinity;
+        for (const particle of this.particleSnapshots) {
+            const otherPosition = { x: particle.positionX, y: particle.positionY };
+            const d = distanceBetween(position, otherPosition) - particle.radius;
+            if (d < distance) {
+                distance = d;
+            }
+        }
+        return distance;
     }
 
-    distanceToClosest(v: Vector): number {
-        return this.simulation.distanceToClosest(v);
-    }
-
-    setPositionX(readonlyParticle: ReadonlyParticle, x: number): void;
-    setPositionX({ particle }: ReadonlyParticleImpl, x: number): void {
+    setPositionX(particle: ParticleSnapshot, x: number): void {
         if (this.simulation.isValidPositionX(particle, x)) {
-            const previous = particle.position.x;
-            const undo = new HistoryBuilder()
-                                             .undoAction(() => {
-                                                 particle.position.x = previous;
-                                             })
-                                             .redoAction(() => {
-                                                 particle.position.x = x;
-                                             })
-                                             .build();
-            particle.position.x = x;
-            this.undos.push(undo);
+            const previous = particle.positionX;
+            const undo = new UndoRedoBuilder()
+                                              .undoAction(() => {
+                                                  this.simulation.setPositionX(particle, previous);
+                                              })
+                                              .redoAction(() => {
+                                                  this.simulation.setPositionX(particle, x);
+                                              })
+                                              .build();
+            this.simulation.setPositionX(particle, x);
+            this.history.appendUndo(undo);
         }
     }
 
-    setPositionY(readonlyParticle: ReadonlyParticle, y: number): void;
-    setPositionY({ particle }: ReadonlyParticleImpl, y: number): void {
+    setPositionY(particle: ParticleSnapshot, y: number): void {
         if (this.simulation.isValidPositionY(particle, y)) {
-            const previous = particle.position.y;
-            const undo = new HistoryBuilder()
-                                             .undoAction(() => {
-                                                 particle.position.y = previous;
-                                             })
-                                             .redoAction(() => {
-                                                 particle.position.y = y;
-                                             })
-                                             .build();
-            particle.position.y = y;
-            this.undos.push(undo);
+            const previous = particle.positionY;
+            const undo = new UndoRedoBuilder()
+                                              .undoAction(() => {
+                                                  this.simulation.setPositionY(particle, previous);
+                                              })
+                                              .redoAction(() => {
+                                                  this.simulation.setPositionY(particle, y);
+                                              })
+                                              .build();
+            this.simulation.setPositionY(particle, y);
+            this.history.appendUndo(undo);
         }
     }
 
-    setRadius(readonlyParticle: ReadonlyParticle, radius: number): void;
-    setRadius({ particle }: ReadonlyParticleImpl, radius: number): void {
+    setRadius(particle: ParticleSnapshot, radius: number): void {
         if (this.simulation.isValidRadius(particle, radius)) {
             const previous = particle.radius;
-            const undo = new HistoryBuilder()
-                                             .undoAction(() => {
-                                                 particle.radius = previous;
-                                             })
-                                             .redoAction(() => {
-                                                 particle.radius = radius;
-                                             })
-                                             .build();
-            particle.radius = radius;
-            this.undos.push(undo);
+            const undo = new UndoRedoBuilder()
+                                              .undoAction(() => {
+                                                  this.simulation.setRadius(particle, previous);
+                                              })
+                                              .redoAction(() => {
+                                                  this.simulation.setRadius(particle, radius);
+                                              })
+                                              .build();
+            this.simulation.setRadius(particle, radius);
+            this.history.appendUndo(undo);
         }
+    }
+
+    setVelocityX(particle: ParticleSnapshot, velocityX: number): void {
+        const previous = particle.velocityX;
+        this.simulation.setVelocityX(particle, velocityX);
+        const undo = new UndoRedoBuilder()
+                                          .undoAction(() => {
+                                              this.simulation.setVelocityX(particle, previous);
+                                          })
+                                          .redoAction(() => {
+                                              this.simulation.setVelocityX(particle, velocityX);
+                                          })
+                                          .build();
+        this.history.appendUndo(undo);
+    }
+
+    setVelocityY(particle: ParticleSnapshot, velocityY: number): void {
+        const previous = particle.velocityY;
+        this.simulation.setVelocityY(particle, velocityY);
+        const undo = new UndoRedoBuilder()
+                                          .undoAction(() => {
+                                              this.simulation.setVelocityY(particle, previous);
+                                          })
+                                          .redoAction(() => {
+                                              this.simulation.setVelocityY(particle, velocityY);
+                                          })
+                                          .build();
+        this.history.appendUndo(undo);
     }
 }

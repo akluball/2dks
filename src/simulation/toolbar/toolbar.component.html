@@ -3,8 +3,9 @@
         <option></option>
         <option [value]="Action.ADD_PARTICLE">add particle</option>
     </select>
-    <button class="arial toolbar_history" value="undo" (click)="undo.emit()">{{ undoSymbol }}</button>
-    <button class="arial toolbar_history" value="redo" (click)="redo.emit()">{{ redoSymbol }}</button>
+    <button class="arial" (click)="undo.emit()">{{ symbol.UNDO }}</button>
+    <button class="arial" (click)="redo.emit()">{{ symbol.REDO }}</button>
+    <button class="arial" (click)="step.emit()">{{ symbol.STEP }}</button>
 </div>
 
 <div class="arial toolbar_toggle" (click)="toggle()">

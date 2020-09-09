@@ -7,9 +7,10 @@ import {
     getToolbarToggle,
     getActionSelect,
     getUndoButton,
-    getRedoButton
+    getRedoButton,
+    getStepButton
 } from '../element-getters';
-import { LEFT_ARROW, RIGHT_ARROW, UNDO, REDO } from '../symbol';
+import { LEFT_ARROW, RIGHT_ARROW, UNDO, REDO, STEP } from '../symbol';
 import {
     emToPixels,
     sleep,
@@ -85,8 +86,7 @@ describe('simulation toolbar component', function() {
         it('content width is border width', async function(this: Context) {
             await getToolbarToggle(this.driver).click();
             await sleep(TOOLBAR_TOGGLE_TRANSITION_MILLIS);
-            const content = getToolbarContent(this.driver);
-            expect(await getWidth(content)).toBe(4);
+            expect(await getWidth(getToolbarContent(this.driver))).toBe(4);
         });
 
         it('content right x is toggle left x', async function(this: Context) {
@@ -126,5 +126,9 @@ describe('simulation toolbar component', function() {
 
     it('should have redo button', async function(this: Context) {
         expect(await getRedoButton(this.driver).getText()).toBe(REDO);
+    });
+
+    it('should have step button', async function(this: Context) {
+        expect(await getStepButton(this.driver).getText()).toBe(STEP);
     });
 });

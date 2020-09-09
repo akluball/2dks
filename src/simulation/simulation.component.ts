@@ -2,7 +2,8 @@ import { Component, HostListener, HostBinding, ElementRef, ViewChild } from '@an
 import { SimulationService } from './simulation.service';
 import Action from './toolbar/Action';
 import Vector, { distanceBetween } from './model/Vector';
-import ReadonlyParticle from './model/ReadonlyParticle';
+import ParticleSnapshot from './model/ParticleSnapshot';
+import { nextTick } from '../util';
 
 interface PendingParticle {
     cx: number;
@@ -22,13 +23,13 @@ export class SimulationComponent {
     @ViewChild('svg') svg!: ElementRef<SVGSVGElement>;
     action = '';
     pendingParticle: PendingParticle | undefined;
-    described: ReadonlyParticle | undefined;
+    described: ParticleSnapshot | undefined;
     circleHover = false;
     circleFocus = false;
     descriptionHover = false;
     descriptionFocus = false;
 
-    constructor(public service: SimulationService) {
+    constructor(readonly service: SimulationService) {
     }
 
     private toSvgX(x: number) {
@@ -54,40 +55,44 @@ export class SimulationComponent {
         this.service.redo();
     }
 
-    onCircleHover(particle: ReadonlyParticle): void {
+    step(): void {
+        this.service.step();
+    }
+
+    onCircleHover(particle: ParticleSnapshot): void {
         if (!this.pendingParticle && !this.circleFocus && !this.descriptionFocus) {
             this.circleHover = true;
             this.described = particle;
         }
     }
 
-    onCircleDehover(particle: ReadonlyParticle): void {
-        setTimeout(() => {
+    onCircleDehover(particle: ParticleSnapshot): void {
+        nextTick(() => {
             if (particle === this.described) {
                 this.circleHover = false;
                 if (!(this.circleFocus || this.descriptionHover || this.descriptionFocus)) {
                     this.described = undefined;
                 }
             }
-        }, 0);
+        });
     }
 
-    onCircleFocus(particle: ReadonlyParticle): void {
+    onCircleFocus(particle: ParticleSnapshot): void {
         if (!this.pendingParticle) {
             this.circleFocus = true;
             this.described = particle;
         }
     }
 
-    onCircleBlur(particle: ReadonlyParticle): void {
-        setTimeout(() => {
+    onCircleBlur(particle: ParticleSnapshot): void {
+        nextTick(() => {
             if (particle === this.described) {
                 this.circleFocus = false;
                 if (!(this.circleFocus || this.descriptionHover || this.descriptionFocus)) {
                     this.described = undefined;
                 }
             }
-        }, 0);
+        });
     }
 
     onPress(target: Element, { x, y }: Vector): void {

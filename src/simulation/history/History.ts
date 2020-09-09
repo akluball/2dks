@@ -1,42 +1,28 @@
 import Undo from './Undo';
 import Redo from './Redo';
 
-interface History extends Undo, Redo {
-}
+class History {
+    private undos: Undo[] = [];
+    private redos: Redo[] = [];
 
-interface Action {
-    (): void;
-}
+    appendUndo(undo: Undo): void {
+        this.redos.splice(0);
+        this.undos.push(undo);
+    }
 
-export class HistoryBuilder {
-    private history: History & { undoActions: Action[], redoActions: Action[] } = {
-        undoActions: [],
-        redoActions: [],
-        undo(): Redo {
-            this.undoActions.forEach(action => {
-                action();
-            });
-            return this;
-        },
-        redo(): Undo {
-            this.redoActions.forEach(action => {
-                action();
-            });
-            return this;
+    undo(): void {
+        const redo = this.undos.pop()?.undo();
+        if (redo) {
+            this.redos.push(redo);
         }
-    };
-
-    undoAction(action: Action): HistoryBuilder {
-        this.history.undoActions.push(action);
-        return this;
     }
 
-    redoAction(action: Action): HistoryBuilder {
-        this.history.redoActions.push(action);
-        return this;
-    }
-
-    build(): History {
-        return this.history;
+    redo(): void {
+        const undo = this.redos.pop()?.redo();
+        if (undo) {
+            this.undos.push(undo);
+        }
     }
 }
+
+export default History;
