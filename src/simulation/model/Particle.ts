@@ -1,18 +1,18 @@
 import TimeSeries from './TimeSeries';
-import Vector, { distanceBetween } from './Vector';
+import { ReadonlyVector, distanceBetween } from './vector';
 
 export default class Particle {
-    positionTimeSeries: TimeSeries<Vector>;
+    positionTimeSeries: TimeSeries<ReadonlyVector>;
     radius: number;
-    velocity: Vector;
+    velocity: ReadonlyVector;
 
-    constructor(time: number, center: Vector, radius: number) {
+    constructor(time: number, center: ReadonlyVector, radius: number) {
         this.positionTimeSeries = new TimeSeries(time, center);
         this.radius = radius;
         this.velocity = { x: 0, y: 0 };
     }
 
-    getPosition(time: number): Vector {
+    getPosition(time: number): ReadonlyVector {
         return this.positionTimeSeries.firstNotAfter(time);
     }
 

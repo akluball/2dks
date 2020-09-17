@@ -1,8 +1,24 @@
-import { Component, HostListener, HostBinding, ElementRef, ViewChild } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    HostListener,
+    HostBinding,
+    ViewChild,
+    NgZone,
+    OnDestroy,
+    Renderer2,
+    ChangeDetectorRef,
+    QueryList,
+    forwardRef,
+    ViewChildren
+} from '@angular/core';
 import { SimulationService } from './simulation.service';
+import { MouseTrackerComponent } from './mouse-tracker/mouse-tracker.component';
 import Action from './toolbar/Action';
-import Vector, { distanceBetween } from './model/Vector';
+import CoordinateConverter, { SvgViewport } from './CoordinateConverter';
 import ParticleSnapshot from './model/ParticleSnapshot';
+import { ReadonlyVector, distanceBetween } from './model/vector';
 import { nextTick } from '../util';
 
 interface PendingParticle {
@@ -18,27 +34,44 @@ interface PendingParticle {
     templateUrl: './simulation.component.html',
     styleUrls: [ './simulation.component.css' ]
 })
-export class SimulationComponent {
+export class SimulationComponent implements AfterViewInit, OnDestroy {
     @HostBinding('attr.tabindex') readonly tabindex = 0;
     @ViewChild('svg') svg!: ElementRef<SVGSVGElement>;
+    @ViewChildren(forwardRef(() => MouseTrackerComponent)) mouseTrackers!: QueryList<MouseTrackerComponent>;
+
+    readonly converter = new CoordinateConverter();
     action = '';
+    showGrid = false;
+    showTracker = false;
     pendingParticle: PendingParticle | undefined;
     described: ParticleSnapshot | undefined;
     circleHover = false;
     circleFocus = false;
     descriptionHover = false;
     descriptionFocus = false;
+    panReference: ReadonlyVector | undefined;
 
-    constructor(readonly service: SimulationService) {
+    private unlistens: { (): void }[]  = [];
+
+    constructor(readonly service: SimulationService,
+        private zone: NgZone,
+        private renderer: Renderer2,
+        private changeDetector: ChangeDetectorRef) {
     }
 
-    private toSvgX(x: number) {
-        return x - this.svg.nativeElement.getBoundingClientRect().left;
+    ngAfterViewInit(): void {
+        this.converter.setSvgViewport(new SvgViewport(this.svg.nativeElement));
+        this.zone.runOutsideAngular(() => {
+            this.unlistens.push(this.renderer.listen(this.svg.nativeElement,
+                                                     'mousemove',
+                                                     this.onMove.bind(this)));
+        });
     }
 
-    private toSvgY(y: number) {
-        const { top, height } = this.svg.nativeElement.getBoundingClientRect();
-        return -y + top + height;
+    ngOnDestroy(): void {
+        this.unlistens.forEach(unlisten => {
+            unlisten();
+        });
     }
 
     @HostListener('window:resize')
@@ -60,6 +93,9 @@ export class SimulationComponent {
     }
 
     onCircleHover(particle: ParticleSnapshot): void {
+        if (this.panReference) {
+            return;
+        }
         if (!this.pendingParticle && !this.circleFocus && !this.descriptionFocus) {
             this.circleHover = true;
             this.described = particle;
@@ -95,41 +131,52 @@ export class SimulationComponent {
         });
     }
 
-    onPress(target: Element, { x, y }: Vector): void {
+    private pressTagFilter = [ 'svg', 'line', 'text' ];
+
+    onPress(target: Element, v: ReadonlyVector): void {
+        if (!this.pressTagFilter.includes(target.tagName)) {
+            return;
+        }
         switch (this.action) {
             case Action.ADD_PARTICLE: {
-                if (target !== this.svg.nativeElement) {
-                    break;
-                }
-                x = this.toSvgX(x);
-                y = this.toSvgY(y);
-                const radiusLimit = this.service.distanceToClosest({ x, y });
-                const fill = radiusLimit === 0 ? 'red' : 'lightgray';
-                this.pendingParticle = { cx: x, cy: y, r: 0, fill, radiusLimit };
+                const center = this.converter.clientToModel(v);
+                const radiusLimit = this.service.distanceToClosest(center);
+                this.pendingParticle = { cx: center.x, cy: center.y, r: 0, fill: 'gray', radiusLimit };
                 break;
+            }
+            case Action.ZOOM_PAN: {
+                this.panReference = v;
             }
         }
     }
 
-    onMove({ x, y }: Vector): void {
+    onMove(v: ReadonlyVector): void {
+        this.refreshMouseTracker(v);
         switch (this.action) {
             case Action.ADD_PARTICLE: {
                 if (!this.pendingParticle) {
                     break;
                 }
-                x = this.toSvgX(x);
-                y = this.toSvgY(y);
+                const center = this.converter.clientToModel(v);
                 this.pendingParticle.r = distanceBetween({ x: this.pendingParticle.cx, y: this.pendingParticle.cy },
-                                                         { x, y });
+                                                         center);
                 this.pendingParticle.fill = this.pendingParticle.r < this.pendingParticle.radiusLimit
-                    ? 'lightgray'
+                    ? 'gray'
                     : 'red';
+                this.changeDetector.detectChanges();
                 break;
+            }
+            case Action.ZOOM_PAN: {
+                if (this.panReference) {
+                    this.converter.pan(this.panReference, v);
+                    this.panReference = v;
+                    this.changeDetector.detectChanges();
+                }
             }
         }
     }
 
-    onRelease(coordinates: Vector): void {
+    onRelease(coordinates: ReadonlyVector): void {
         switch (this.action) {
             case Action.ADD_PARTICLE: {
                 if (!this.pendingParticle) {
@@ -139,11 +186,37 @@ export class SimulationComponent {
                 const { cx, cy, r } = this.pendingParticle;
                 this.service.createParticle(cx, cy, r);
                 this.pendingParticle = undefined;
+                break;
+            }
+            case Action.ZOOM_PAN: {
+                this.panReference = undefined;
+                break;
+            }
+        }
+    }
+
+    onWheel(v: ReadonlyVector, dy: number): void {
+        this.refreshMouseTracker(v);
+        if (this.action === Action.ZOOM_PAN) {
+            if (dy < 0) {
+                this.converter.zoomIn();
+                this.changeDetector.detectChanges();
+            } else if (dy > 0) {
+                this.converter.zoomOut();
+                this.changeDetector.detectChanges();
             }
         }
     }
 
     onLeave(): void {
         this.pendingParticle = undefined;
+        this.panReference = undefined;
     }
+
+    private refreshMouseTracker(v: ReadonlyVector): void {
+        this.mouseTrackers.forEach(mouseTracker => {
+            mouseTracker.setMouseModelCoordinates(this.converter.clientToModel(v));
+        });
+    }
+
 }

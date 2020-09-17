@@ -2,7 +2,7 @@ import {
     addParticle,
     click,
     move,
-    relativeMove,
+    relMove,
     selectAddParticleAction,
 } from '../actions';
 import { Context, setup, cleanup } from '../context';
@@ -41,7 +41,7 @@ describe('particle description', function() {
         await selectAddParticleAction(this.driver);
         await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
         await move(this.driver, { x: 204, y: 200 });
-        await relativeMove(this.driver, { x: 2 });
+        await relMove(this.driver, { dx: 2 });
         await getParticleDescription(this.driver);
     });
 

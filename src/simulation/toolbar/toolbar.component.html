@@ -1,13 +1,27 @@
-<div [class]="['toolbar_content', visible ? 'toolbar_content__visible' : 'toolbar_content__hidden']">
+<div
+    #content
+    [class]="['content', visible ? 'content__visible' : 'content__hidden']"
+    (mousedown)="startScroll($event.clientX)"
+    (mouseleave)="endScroll()"
+    (mouseup)="endScroll()"
+>
     <select (input)="actionSelect.emit($event.target.value)">
-        <option></option>
         <option [value]="Action.ADD_PARTICLE">add particle</option>
+        <option [value]="Action.ZOOM_PAN">zoom/pan</option>
     </select>
-    <button class="arial" (click)="undo.emit()">{{ symbol.UNDO }}</button>
-    <button class="arial" (click)="redo.emit()">{{ symbol.REDO }}</button>
-    <button class="arial" (click)="step.emit()">{{ symbol.STEP }}</button>
+    <button class="symbol" (click)="undo.emit()">{{ symbol.UNDO }}</button>
+    <button class="symbol" (click)="redo.emit()">{{ symbol.REDO }}</button>
+    <button class="symbol" (click)="step.emit()">{{ symbol.STEP }}</button>
+    <button
+        [style.color]="showGrid ? 'black' : 'gray'"
+        (click)="showGrid = !showGrid; showGridChange.emit(showGrid)"
+    >grid</button>
+    <button
+        [style.color]="showTracker ? 'black' : 'gray'"
+        (click)="showTracker = !showTracker; showTrackerChange.emit(showTracker)"
+    >tracker</button>
 </div>
 
-<div class="arial toolbar_toggle" (click)="toggle()">
-    {{ arrow }}
+<div class="toggle symbol" (click)="visible = !visible">
+    {{ visible ? symbol.LEFT_ARROW : symbol.RIGHT_ARROW }}
 </div>

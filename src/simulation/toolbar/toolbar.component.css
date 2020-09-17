@@ -1,9 +1,9 @@
 :host {
     position: absolute;
-    top: 2em;
-    left: 2em;
-    right: 2em;
-    height: 4em;
+    top: 2rem;
+    left: 2rem;
+    right: 2rem;
+    height: 4rem;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -14,7 +14,33 @@
     pointer-events: auto;
 }
 
-.toolbar_content {
+.content__visible {
+    flex: 1 1;
+}
+
+.content__hidden {
+    flex: 0 0 0;
+}
+
+.toggle {
+    flex: 0 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.toggle:hover {
+    background-color: gray;
+    color: black;
+}
+.content {
     height: 100%;
     display: flex;
     flex-direction: row;
@@ -24,44 +50,20 @@
     white-space: nowrap;
     background-color: gray;
     border-left: 4px solid black;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
-.toolbar_content > * {
-    margin-left: .5em;
-    padding: 0 .3em;
-    font-size: 1.5em;
+.content > * {
+    margin-left: 1rem;
+    padding: 0 .3rem;
+    font-size: 1.5rem;
+    height: 2rem;
     border-left: solid 2px black;
-    appearance: none;
     background-color: white;
 }
 
-.toolbar_content > button {
+.symbol {
     font-weight: bold;
-}
-
-.toolbar_content__visible {
-    flex: 1 1;
-}
-
-.toolbar_content__hidden {
-    flex: 0 0 0;
-}
-
-.toolbar_toggle {
-    flex: 0 0;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3em;
-    cursor: pointer;
-    background-color: black;
-    color: white;
-    border-bottom-right-radius: 5px;
-    border-top-right-radius: 5px;
-}
-
-.toolbar_toggle:hover {
-    background-color: gray;
-    color: black;
 }

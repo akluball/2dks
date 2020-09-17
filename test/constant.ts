@@ -1,3 +1,3 @@
 const BUFFER = 100;
 
-export const TOOLBAR_TOGGLE_TRANSITION_MILLIS = 500 + BUFFER;
+export const toggle_TRANSITION_MILLIS = 500 + BUFFER;

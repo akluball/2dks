@@ -197,7 +197,6 @@ target.test = function() {
     const command = [
         bin.jasmine,
         `--config=${root('test', 'jasmine.json')}`,
-        `--require=${root('build', 'test', 'configurator.js')}`,
         '--color'
     ].join(' ');
     exec(command);
@@ -211,7 +210,7 @@ target.testCleanup = function() {
     });
 };
 
-target.testDev = async function() {
+target.dev = async function() {
     noFail(() => rm('-r', root('build')));
     env.NODE_ENV = 'development';
     env.JASMINE_DEFAULT_TIMEOUT_INTERVAL = '600000';

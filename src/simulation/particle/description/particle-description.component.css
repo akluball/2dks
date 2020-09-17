@@ -1,6 +1,7 @@
 table {
-    background-color: lightgray;
-    padding: .3em;
+    background-color: gray;
+    color: white;
+    padding: .3rem;
     border-left: solid 2px black;
 }
 
@@ -10,5 +11,5 @@ th, td {
 }
 
 th {
-    padding-right: 1em;
+    padding-right: 1rem;
 }

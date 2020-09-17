@@ -3,7 +3,7 @@ import History from './history/History';
 import { UndoRedoBuilder } from './history/UndoRedo';
 import ParticleSnapshot from './model/ParticleSnapshot';
 import Simulation from './model/Simulation';
-import Vector, { distanceBetween } from './model/Vector';
+import { ReadonlyVector, distanceBetween } from './model/vector';
 
 @Injectable()
 export class SimulationService {
@@ -58,7 +58,7 @@ export class SimulationService {
         this.simulation.removeParticle(particle);
     }
 
-    distanceToClosest(position: Vector): number {
+    distanceToClosest(position: ReadonlyVector): number {
         let distance = Infinity;
         for (const particle of this.particleSnapshots) {
             const otherPosition = { x: particle.positionX, y: particle.positionY };

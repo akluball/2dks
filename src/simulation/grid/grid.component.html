@@ -1,0 +1,32 @@
+<svg:g horizontal>
+    <svg:line
+        *ngFor="let line of horizontal"
+        stroke="black"
+        [attr.x1]="line.startX"
+        [attr.y1]="line.startY"
+        [attr.x2]="line.endX"
+        [attr.y2]="line.endY"
+    ></svg:line>
+    <svg:text
+        *ngFor="let line of horizontal"
+        dominant-baseline="text-before-edge"
+        [attr.x]="line.startX"
+        [attr.y]="line.startY + 1"
+    >{{ line.label }}</svg:text>
+</svg:g>
+<svg:g vertical>
+    <svg:line
+        *ngFor="let line of vertical"
+        stroke="black"
+        [attr.x1]="line.startX"
+        [attr.y1]="line.startY"
+        [attr.x2]="line.endX"
+        [attr.y2]="line.endY"
+    ></svg:line>
+    <svg:text
+        *ngFor="let line of vertical"
+        dominant-baseline="text-after-edge"
+        [attr.x]="line.startX + 1"
+        [attr.y]="line.startY"
+    >{{ line.label }}</svg:text>
+</svg:g>

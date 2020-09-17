@@ -1,5 +1,5 @@
 import Particle from './Particle';
-import { distanceBetween } from './Vector';
+import { distanceBetween } from './vector';
 import ParticleSnapshot from './ParticleSnapshot';
 
 interface SimulationClock {

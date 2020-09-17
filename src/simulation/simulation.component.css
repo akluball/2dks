@@ -14,3 +14,9 @@ svg {
 particle-description {
     position: absolute;
 }
+
+mouse-tracker {
+    position: absolute;
+    top: 0;
+    right: 0;
+}

@@ -1,13 +1,15 @@
 <svg
     #svg
     (mousedown)="onPress($event.target, { x: $event.clientX, y: $event.clientY })"
-    (mousemove)="onMove({ x: $event.clientX, y: $event.clientY })"
     (mouseup)="onRelease({ x: $event.clientX, y: $event.clientY })"
     (mouseleave)="onLeave()"
+    (wheel)="onWheel({ x: $event.clientX, y: $event.clientY }, $event.deltaY)"
 >
-    <g
-        attr.transform="scale(1, -1) translate(0, {{-svg.height.baseVal.value}})"
-    >
+    <g grid
+        *ngIf="showGrid"
+        [converter]="converter"
+    ></g>
+    <g [attr.transform]="converter.modelToSvgTransform">
         <g
             particle-component
             *ngFor="let particle of service.particles"
@@ -31,12 +33,15 @@
     (undo)="undo()"
     (redo)="redo()"
     (step)="step()"
+    (showGrid)="showGrid = $event"
+    (showTracker)="showTracker = $event"
 ></toolbar>
+<mouse-tracker *ngIf="showTracker"></mouse-tracker>
 <particle-description
     *ngIf="circleHover || circleFocus || descriptionHover || descriptionFocus"
     [particle]="described"
-    [style.left.px]="described ? described.positionX + described.radius : 0"
-    [style.top.px]="described ? -described.positionY + svg.height.baseVal.value : 0"
+    [style.left.px]="described ? converter.modelToSvgX(described.positionX + described.radius) : 0"
+    [style.top.px]="described ? converter.modelToSvgY(described?.positionY) : 0"
     [focus]="circleFocus || descriptionFocus"
     (mouseenter)="descriptionHover = true"
     (mouseleave)="descriptionHover = false"

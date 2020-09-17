@@ -11,11 +11,12 @@
     box-shadow: 0 0 3px 3px black;
 }
 
-.arial {
-    font-family: Arial, Helvetica, sans-serif;
-}
-
 body {
     width: 100vw;
     height: 100vh;
+}
+
+.symbol {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
 }

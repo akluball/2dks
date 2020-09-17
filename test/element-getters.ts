@@ -21,19 +21,19 @@ export function getToolbar(driver: ThenableWebDriver): WebElementPromise {
 }
 
 export function getToolbarContent(driver: ThenableWebDriver): WebElementPromise {
-    return driver.findElement(By.css('simulation > toolbar > .toolbar_content'));
+    return driver.findElement(By.css('simulation > toolbar > .content'));
 }
 
 export function getToolbarToggle(driver: ThenableWebDriver): WebElementPromise {
-    return driver.findElement(By.css('simulation > toolbar > .toolbar_toggle'));
+    return driver.findElement(By.css('simulation > toolbar > .toggle'));
 }
 
 export function getActionSelect(driver: ThenableWebDriver): WebElementPromise {
-    return driver.findElement(By.css('simulation > toolbar > .toolbar_content > select'));
+    return driver.findElement(By.css('simulation > toolbar > .content > select'));
 }
 
 function toolbarButton(i: number): Locator {
-    return By.css(`simulation > toolbar > .toolbar_content > button:nth-of-type(${i})`);
+    return By.css(`simulation > toolbar > .content > button:nth-of-type(${i})`);
 }
 
 export function getUndoButton(driver: ThenableWebDriver): WebElementPromise {
@@ -46,6 +46,38 @@ export function getRedoButton(driver: ThenableWebDriver): WebElementPromise {
 
 export function getStepButton(driver: ThenableWebDriver): WebElementPromise {
     return driver.findElement(toolbarButton(3));
+}
+
+export function getGridToggle(driver: ThenableWebDriver): WebElementPromise {
+    return driver.findElement(toolbarButton(4));
+}
+
+export function getMouseTrackerToggle(driver: ThenableWebDriver): WebElementPromise {
+    return driver.findElement(toolbarButton(5));
+}
+
+export function getMouseTracker(driver: ThenableWebDriver): WebElementPromise {
+    return driver.findElement(By.css('simulation > mouse-tracker'));
+}
+
+export function getMouseTrackers(driver: ThenableWebDriver): Promise<WebElement[]> {
+    return driver.findElements(By.css('simulation > mouse-tracker'));
+}
+
+export function getHorizontalGridLines(driver: ThenableWebDriver): Promise<WebElement[]> {
+    return driver.findElements(By.css('simulation > svg > g[grid] > g[horizontal] > line'));
+}
+
+export function getHorizontalGridLineLabels(driver: ThenableWebDriver): Promise<WebElement[]> {
+    return driver.findElements(By.css('simulation > svg > g[grid] > g[horizontal] > text'));
+}
+
+export function getVerticalGridLines(driver: ThenableWebDriver): Promise<WebElement[]> {
+    return driver.findElements(By.css('simulation > svg > g[grid] > g[vertical] > line'));
+}
+
+export function getVerticalGridLineLabels(driver: ThenableWebDriver): Promise<WebElement[]> {
+    return driver.findElements(By.css('simulation > svg > g[grid] > g[vertical] > text'));
 }
 
 export function getPendingParticleCircle(driver: ThenableWebDriver): WebElementPromise {

@@ -43,9 +43,9 @@ cleanup
 npm run test-cleanup
 ```
 
-dev mode testing
+start development mode
 ```shell script
-npm run test:dev
+npm run dev
 ```
 
 ## Maintenance
@@ -64,3 +64,11 @@ clean
 ```shell script
 npm run clean
 ```
+
+## Notes
+
+The tests are strict so there may be some flaking when run against different browsers or versions than the one they were developed against.
+
+Some tests resize the document body.
+
+Some tests assume that the simulation svg has the same dimensions as the document body (see grid tests).

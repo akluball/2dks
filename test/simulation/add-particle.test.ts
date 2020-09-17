@@ -1,10 +1,10 @@
 import { Origin } from 'selenium-webdriver';
 import {
     addParticle,
-    relativeMove,
+    relMove,
     selectAddParticleAction
 } from '../actions';
-import { TOOLBAR_TOGGLE_TRANSITION_MILLIS } from '../constant';
+import { toggle_TRANSITION_MILLIS } from '../constant';
 import { Context, setup, cleanup } from '../context';
 import {
     getToolbar,
@@ -45,14 +45,14 @@ describe('add particle', function() {
         await selectAddParticleAction(this.driver);
 
         await this.driver.actions()
-                         .move({ duration: 0, origin: Origin.VIEWPORT, x: 200, y: 200 })
+                         .move({ duration: 0, x: 200, y: 200 })
                          .press()
                          .move({ duration: 0, origin: Origin.POINTER, x: 4 })
                          .perform();
         const pendingCircle = getPendingParticleCircle(this.driver);
         expect(await getWidth(pendingCircle)).toBe(8);
 
-        await relativeMove(this.driver, { x: -4, y: 3 });
+        await relMove(this.driver, { dx: -4, dy: 3 });
         expect(await getWidth(pendingCircle)).toBe(6);
 
         await this.driver.actions()
@@ -62,7 +62,7 @@ describe('add particle', function() {
         const circle = getParticleCircle(this.driver);
         expect(await getWidth(circle)).toBe(10);
 
-        await relativeMove(this.driver, { x: 1 });
+        await relMove(this.driver, { dx: 1 });
         expect(await getWidth(circle)).toBe(10);
     });
 
@@ -84,7 +84,7 @@ describe('add particle', function() {
     it('does not add on leave', async function(this: Context) {
         await selectAddParticleAction(this.driver);
         await this.driver.actions()
-                         .move({ duration: 0, origin: Origin.VIEWPORT, x: 200, y: 200 })
+                         .move({ duration: 0, x: 200, y: 200 })
                          .press()
                          .move({ duration: 0, origin: getToolbar(this.driver) })
                          .release()
@@ -102,7 +102,7 @@ describe('add particle', function() {
         await selectAddParticleAction(this.driver);
         await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
         await this.driver.actions()
-                         .move({ duration: 0, origin: Origin.VIEWPORT, x: 196, y: 200 })
+                         .move({ duration: 0, x: 196, y: 200 })
                          .press()
                          .perform();
         expect(await count(getPendingParticleCircles(this.driver))).toBe(0);
@@ -111,7 +111,7 @@ describe('add particle', function() {
     it('adds on contents hidden toolbar click', async function(this: Context) {
         await selectAddParticleAction(this.driver);
         await getToolbarToggle(this.driver).click();
-        await sleep(TOOLBAR_TOGGLE_TRANSITION_MILLIS);
+        await sleep(toggle_TRANSITION_MILLIS);
         await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
         await getParticleCircle(this.driver);
     });
@@ -123,28 +123,28 @@ describe('add particle', function() {
         expect(await count(getParticleCircles(this.driver))).toBe(1);
     });
 
-    it('pending particle should be lightgray', async function(this: Context) {
+    it('pending particle should be gray', async function(this: Context) {
         await selectAddParticleAction(this.driver);
         await this.driver.actions()
-                         .move({ duration: 0, origin: Origin.VIEWPORT, x: 200, y: 200 })
+                         .move({ duration: 0, x: 200, y: 200 })
                          .press()
                          .perform();
         const circle = getPendingParticleCircle(this.driver);
-        expect(await circle.getAttribute('fill')).toBe('lightgray');
+        expect(await circle.getAttribute('fill')).toBe('gray');
     });
 
     it('overlapping pending particle should be red', async function(this: Context) {
         await selectAddParticleAction(this.driver);
         await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
         await this.driver.actions()
-                         .move({ duration: 0, origin: Origin.VIEWPORT, x: 190, y: 200 })
+                         .move({ duration: 0, x: 190, y: 200 })
                          .press()
                          .move({ duration: 0, origin: Origin.POINTER, x: 5 })
                          .perform();
         const circle = getPendingParticleCircle(this.driver);
         expect(await circle.getAttribute('fill')).toBe('red');
-        await relativeMove(this.driver, { x: -1 });
-        expect(await circle.getAttribute('fill')).toBe('lightgray');
+        await relMove(this.driver, { dx: -1 });
+        expect(await circle.getAttribute('fill')).toBe('gray');
     });
 
     it('added particle should be black', async function(this: Context) {
