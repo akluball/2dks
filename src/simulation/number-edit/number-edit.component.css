@@ -6,6 +6,7 @@ input::-webkit-inner-spin-button {
 input {
     background-color: white;
     color: black;
+    height: 100%;
 }
 
 @keyframes on-edit {

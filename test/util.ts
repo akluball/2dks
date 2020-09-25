@@ -119,6 +119,9 @@ const scripts = {
         const { right } = element.getBoundingClientRect();
         const { right: parentRight } = parent.getBoundingClientRect();
         parent.scrollLeft = right - parentRight;
+    },
+    getSelectedOption: function(select: HTMLSelectElement): HTMLOptionElement {
+        return select.selectedOptions[0];
     }
 };
 
@@ -250,6 +253,11 @@ export function resizeBody(driver: ThenableWebDriver, width?: string, height?: s
 
 export function hScrollTo(element: WebElementPromise): Promise<void> {
     return element.getDriver().executeScript(scripts.hScrollTo, element);
+}
+
+export function getSelectedOption(select: WebElementPromise): WebElementPromise {
+    const driver = select.getDriver();
+    return new WebElementPromise(driver, driver.executeScript(scripts.getSelectedOption, select));
 }
 
 export function sleep(millis: number): Promise<void> {

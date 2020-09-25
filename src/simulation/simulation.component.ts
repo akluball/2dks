@@ -15,8 +15,9 @@ import {
 } from '@angular/core';
 import { SimulationService } from './simulation.service';
 import { MouseTrackerComponent } from './mouse-tracker/mouse-tracker.component';
-import Action from './toolbar/Action';
+import { Action } from './toolbar/toolbar.component';
 import CoordinateConverter, { SvgViewport } from './CoordinateConverter';
+import GravitySimulator from './model/GravitySimulator';
 import ParticleSnapshot from './model/ParticleSnapshot';
 import { ReadonlyVector, distanceBetween } from './model/vector';
 import { nextTick } from '../util';
@@ -40,7 +41,7 @@ export class SimulationComponent implements AfterViewInit, OnDestroy {
     @ViewChildren(forwardRef(() => MouseTrackerComponent)) mouseTrackers!: QueryList<MouseTrackerComponent>;
 
     readonly converter = new CoordinateConverter();
-    action = '';
+    action = Action.ADD_PARTICLE;
     showGrid = false;
     showTracker = false;
     pendingParticle: PendingParticle | undefined;
@@ -53,7 +54,7 @@ export class SimulationComponent implements AfterViewInit, OnDestroy {
 
     private unlistens: { (): void }[]  = [];
 
-    constructor(readonly service: SimulationService,
+    constructor(private service: SimulationService,
         private zone: NgZone,
         private renderer: Renderer2,
         private changeDetector: ChangeDetectorRef) {
@@ -72,6 +73,26 @@ export class SimulationComponent implements AfterViewInit, OnDestroy {
         this.unlistens.forEach(unlisten => {
             unlisten();
         });
+    }
+
+    get particles(): ReadonlyArray<ParticleSnapshot> {
+        return this.service.particles;
+    }
+
+    get gravitySimulator(): GravitySimulator {
+        return this.service.gravitySimulator;
+    }
+
+    set gravitySimulator(gravitySimulator: GravitySimulator) {
+        this.service.gravitySimulator = gravitySimulator;
+    }
+
+    get gravitationalConstant(): number {
+        return this.service.gravitationalConstant;
+    }
+
+    set gravitationalConstant(gravitationalConstant: number) {
+        this.service.gravitationalConstant = gravitationalConstant;
     }
 
     @HostListener('window:resize')

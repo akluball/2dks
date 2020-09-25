@@ -1,3 +1,4 @@
 const BUFFER = 100;
 
-export const toggle_TRANSITION_MILLIS = 500 + BUFFER;
+export const TOGGLE_TRANSITION_MILLIS = 500 + BUFFER;
+export const TOLERANCE = .00001;

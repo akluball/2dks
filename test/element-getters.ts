@@ -28,8 +28,20 @@ export function getToolbarToggle(driver: ThenableWebDriver): WebElementPromise {
     return driver.findElement(By.css('simulation > toolbar > .toggle'));
 }
 
+function toolbarSelect(i: number): Locator {
+    return By.css(`simulation > toolbar > .content > select:nth-of-type(${i})`);
+}
+
 export function getActionSelect(driver: ThenableWebDriver): WebElementPromise {
-    return driver.findElement(By.css('simulation > toolbar > .content > select'));
+    return driver.findElement(toolbarSelect(1));
+}
+
+export function getGravitySimulatorSelect(driver: ThenableWebDriver): WebElementPromise {
+    return driver.findElement(toolbarSelect(2));
+}
+
+export function getGravitationalConstantInput(driver: ThenableWebDriver): WebElementPromise {
+    return driver.findElement(By.css('simulation > toolbar > .content > number-edit > input'));
 }
 
 function toolbarButton(i: number): Locator {
@@ -88,8 +100,8 @@ export function getPendingParticleCircles(driver: ThenableWebDriver): Promise<We
     return driver.findElements(By.css('svg > g > circle'));
 }
 
-export function getParticleCircle(driver: ThenableWebDriver): WebElementPromise {
-    return driver.findElement(By.css('svg > g > g[particle-component] > circle'));
+export function getParticleCircle(driver: ThenableWebDriver, i = 1): WebElementPromise {
+    return driver.findElement(By.css(`svg > g > g[particle-component]:nth-of-type(${i}) > circle`));
 }
 
 export function getParticleCircles(driver: ThenableWebDriver): Promise<WebElement[]> {
@@ -120,6 +132,10 @@ export function getVelocityHeader(driver: ThenableWebDriver): WebElementPromise 
     return driver.findElement(descriptionHeader(3));
 }
 
+export function getMassHeader(driver: ThenableWebDriver): WebElementPromise {
+    return driver.findElement(descriptionHeader(4));
+}
+
 function descriptionCell(i: number): Locator {
     return By.css(`particle-description > table > tr:nth-of-type(${i}) > td`);
 }
@@ -134,6 +150,10 @@ export function getRadiusCell(driver: ThenableWebDriver): WebElementPromise {
 
 export function getVelocityCell(driver: ThenableWebDriver): WebElementPromise {
     return driver.findElement(descriptionCell(3));
+}
+
+export function getMassCell(driver: ThenableWebDriver): WebElementPromise {
+    return driver.findElement(descriptionCell(4));
 }
 
 function descriptionInput(i: number, j = 1): Locator {
@@ -158,4 +178,8 @@ export function getVelocityXInput(driver: ThenableWebDriver): WebElementPromise 
 
 export function getVelocityYInput(driver: ThenableWebDriver): WebElementPromise {
     return driver.findElement(descriptionInput(3, 2));
+}
+
+export function getMassInput(driver: ThenableWebDriver): WebElementPromise {
+    return driver.findElement(descriptionInput(4));
 }

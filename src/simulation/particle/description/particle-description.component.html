@@ -46,4 +46,17 @@
             <td>({{ particle.velocityX }},{{ particle.velocityY }})</td>
         </ng-template>
     </tr>
+    <tr>
+        <th>mass</th>
+        <td *ngIf="focus; else massElse">
+            <number-edit
+                #massEdit
+                [value]="particle.mass"
+                (edit)="setMass($event, massEdit)"
+            ></number-edit>
+        </td>
+        <ng-template #massElse>
+            <td>{{ particle.mass }}</td>
+        </ng-template>
+    </tr>
 </table>

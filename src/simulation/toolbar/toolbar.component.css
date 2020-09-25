@@ -64,6 +64,10 @@
     background-color: white;
 }
 
+.content > number-edit {
+    padding: 0;
+}
+
 .symbol {
     font-weight: bold;
 }

@@ -4,6 +4,7 @@ import { UndoRedoBuilder } from './history/UndoRedo';
 import ParticleSnapshot from './model/ParticleSnapshot';
 import Simulation from './model/Simulation';
 import { ReadonlyVector, distanceBetween } from './model/vector';
+import GravitySimulator from './model/GravitySimulator';
 
 @Injectable()
 export class SimulationService {
@@ -13,6 +14,45 @@ export class SimulationService {
 
     get particles(): ReadonlyArray<ParticleSnapshot> {
         return this.particleSnapshots;
+    }
+
+    get gravitySimulator(): GravitySimulator {
+        return this.simulation.gravitySimulator;
+    }
+
+    set gravitySimulator(gravitySimulator: GravitySimulator) {
+        if (gravitySimulator === this.simulation.gravitySimulator) {
+            return;
+        }
+        const previous = this.simulation.gravitySimulator;
+        const undo = new UndoRedoBuilder()
+                                          .undoAction(() => {
+                                              this.simulation.gravitySimulator = previous;
+                                          })
+                                          .redoAction(() => {
+                                              this.simulation.gravitySimulator = gravitySimulator;
+                                          })
+                                          .build();
+        this.simulation.gravitySimulator = gravitySimulator;
+        this.history.appendUndo(undo);
+    }
+
+    get gravitationalConstant(): number {
+        return this.simulation.gravitationalConstant;
+    }
+
+    set gravitationalConstant(gravitationalConstant: number) {
+        const previous = this.simulation.gravitationalConstant;
+        const undo = new UndoRedoBuilder()
+                                          .undoAction(() => {
+                                              this.simulation.gravitationalConstant = previous;
+                                          })
+                                          .redoAction(() => {
+                                              this.simulation.gravitationalConstant = gravitationalConstant;
+                                          })
+                                          .build();
+        this.history.appendUndo(undo);
+        this.simulation.gravitationalConstant = gravitationalConstant;
     }
 
     undo(): void {
@@ -102,22 +142,6 @@ export class SimulationService {
         }
     }
 
-    setRadius(particle: ParticleSnapshot, radius: number): void {
-        if (this.simulation.isValidRadius(particle, radius)) {
-            const previous = particle.radius;
-            const undo = new UndoRedoBuilder()
-                                              .undoAction(() => {
-                                                  this.simulation.setRadius(particle, previous);
-                                              })
-                                              .redoAction(() => {
-                                                  this.simulation.setRadius(particle, radius);
-                                              })
-                                              .build();
-            this.simulation.setRadius(particle, radius);
-            this.history.appendUndo(undo);
-        }
-    }
-
     setVelocityX(particle: ParticleSnapshot, velocityX: number): void {
         const previous = particle.velocityX;
         this.simulation.setVelocityX(particle, velocityX);
@@ -143,6 +167,36 @@ export class SimulationService {
                                               this.simulation.setVelocityY(particle, velocityY);
                                           })
                                           .build();
+        this.history.appendUndo(undo);
+    }
+
+    setRadius(particle: ParticleSnapshot, radius: number): void {
+        if (this.simulation.isValidRadius(particle, radius)) {
+            const previous = particle.radius;
+            const undo = new UndoRedoBuilder()
+                                              .undoAction(() => {
+                                                  this.simulation.setRadius(particle, previous);
+                                              })
+                                              .redoAction(() => {
+                                                  this.simulation.setRadius(particle, radius);
+                                              })
+                                              .build();
+            this.simulation.setRadius(particle, radius);
+            this.history.appendUndo(undo);
+        }
+    }
+
+    setMass(particle: ParticleSnapshot, mass: number): void {
+        const previous = particle.mass;
+        const undo = new UndoRedoBuilder()
+                                          .undoAction(() => {
+                                              this.simulation.setMass(particle, previous);
+                                          })
+                                          .redoAction(() => {
+                                              this.simulation.setMass(particle, mass);
+                                          })
+                                          .build();
+        this.simulation.setMass(particle, mass);
         this.history.appendUndo(undo);
     }
 }

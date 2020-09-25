@@ -2,9 +2,10 @@ import { Origin } from 'selenium-webdriver';
 import {
     addParticle,
     relMove,
-    selectAddParticleAction
+    selectAddParticleAction,
+    move
 } from '../actions';
-import { toggle_TRANSITION_MILLIS } from '../constant';
+import { TOGGLE_TRANSITION_MILLIS } from '../constant';
 import { Context, setup, cleanup } from '../context';
 import {
     getToolbar,
@@ -13,7 +14,8 @@ import {
     getToolbarToggle,
     getPendingParticleCircle,
     getPendingParticleCircles,
-    getStepButton
+    getMassCell,
+    getVelocityCell
 } from '../element-getters';
 import {
     getCenterX,
@@ -66,13 +68,18 @@ describe('add particle', function() {
         expect(await getWidth(circle)).toBe(10);
     });
 
+    it('mass 1/1000 of volume', async function(this: Context) {
+        await selectAddParticleAction(this.driver);
+        await addParticle(this.driver, { cx: 200, cy: 200, r: 10 });
+        await move(this.driver, { x: 200, y: 200 });
+        expect(await getMassCell(this.driver).getText()).toBe('4.1887902047863905');
+    });
+
     it('velocity is 0', async function(this: Context) {
         await selectAddParticleAction(this.driver);
         await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
-        await getStepButton(this.driver).click();
-        const circle = await getParticleCircle(this.driver);
-        expect(await getCenterX(circle)).toBe(200);
-        expect(await getCenterY(circle)).toBe(200);
+        await move(this.driver, { x: 200, y: 200 });
+        expect(await getVelocityCell(this.driver).getText()).toBe('(0,0)');
     });
 
     it('must have nonzero radius', async function(this: Context) {
@@ -111,7 +118,7 @@ describe('add particle', function() {
     it('adds on contents hidden toolbar click', async function(this: Context) {
         await selectAddParticleAction(this.driver);
         await getToolbarToggle(this.driver).click();
-        await sleep(toggle_TRANSITION_MILLIS);
+        await sleep(TOGGLE_TRANSITION_MILLIS);
         await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
         await getParticleCircle(this.driver);
     });

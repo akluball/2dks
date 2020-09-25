@@ -8,10 +8,16 @@ import {
     OnDestroy,
     NgZone,
     Renderer2,
-    ChangeDetectorRef
+    ChangeDetectorRef,
+    Input
 } from '@angular/core';
-import Action from './Action';
+import GravitySimulator from '../model/GravitySimulator';
 import * as symbol from '../../symbol';
+
+export enum Action {
+    ADD_PARTICLE = 'add-particle',
+    ZOOM_PAN = 'zoom-pan'
+}
 
 @Component({
     selector: 'toolbar',
@@ -20,7 +26,12 @@ import * as symbol from '../../symbol';
 })
 export class ToolbarComponent implements AfterViewInit, OnDestroy {
     @ViewChild('content') content!: ElementRef<HTMLElement>;
-    @Output() actionSelect = new EventEmitter<string>();
+    @Input() action!: Action;
+    @Output() actionChange = new EventEmitter<Action>();
+    @Input() gravitySimulator!: GravitySimulator;
+    @Output() gravitySimulatorChange = new EventEmitter<GravitySimulator>();
+    @Input() gravitationalConstant!: number;
+    @Output() gravitationalConstantChange = new EventEmitter<number>();
     @Output() undo = new EventEmitter<void>();
     @Output() redo = new EventEmitter<void>();
     @Output() step = new EventEmitter<void>();
@@ -28,8 +39,10 @@ export class ToolbarComponent implements AfterViewInit, OnDestroy {
     @Output('showTracker') showTrackerChange = new EventEmitter<boolean>();
 
     readonly symbol = symbol;
-    visible = true;
     Action = Action;
+    GravitySimulator = GravitySimulator;
+
+    visible = true;
     showGrid = false;
     showTracker = false;
 
@@ -42,7 +55,6 @@ export class ToolbarComponent implements AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-        this.actionSelect.emit(Action.ADD_PARTICLE);
         this.zone.runOutsideAngular(() => {
             this.unlisten = this.renderer.listen(this.content.nativeElement,
                                                  'mousemove',

@@ -4,7 +4,11 @@ import {
     chord,
     click,
     clearAndSendKeys,
-    selectAddParticleAction
+    selectAddParticleAction,
+    setMass,
+    selectIntegrateGravitySimulator,
+    selectNoneGravitySimulator,
+    move
 } from '../../actions';
 import { Context, setup, cleanup } from '../../context';
 import {
@@ -17,13 +21,18 @@ import {
     getRadiusInput,
     getVelocityXInput,
     getStepButton,
-    getVelocityYInput
+    getVelocityYInput,
+    getMassInput,
+    getGravitySimulatorSelect,
+    getVelocityCell,
+    getGravitationalConstantInput
 } from '../../element-getters';
 import {
     count,
     getCenterX,
     getCenterY,
-    getWidth
+    getWidth,
+    getSelectedOption
 } from '../../util';
 
 describe('undo', function() {
@@ -67,6 +76,20 @@ describe('undo', function() {
         expect(await count(getParticleCircles(this.driver))).toBe(0);
     });
 
+    it('select gravity simulator', async function(this: Context) {
+        await selectNoneGravitySimulator(this.driver);
+        await selectIntegrateGravitySimulator(this.driver);
+        await getUndoButton(this.driver).click();
+        expect(await getSelectedOption(getGravitySimulatorSelect(this.driver)).getText()).toBe('none');
+    });
+
+    it('set gravitational constant', async function(this: Context) {
+        await getGravitationalConstantInput(this.driver).click();
+        await clearAndSendKeys(this.driver, '.5', Key.ENTER);
+        await getUndoButton(this.driver).click();
+        expect(await getGravitationalConstantInput(this.driver).getAttribute('value')).toBe('1');
+    });
+
     it('add particle', async function(this: Context) {
         await selectAddParticleAction(this.driver);
         await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
@@ -94,6 +117,28 @@ describe('undo', function() {
         expect(await getCenterY(getParticleCircle(this.driver))).toBe(200);
     });
 
+    it('set velocity x', async function(this: Context) {
+        await selectAddParticleAction(this.driver);
+        await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
+        await click(this.driver, { x: 200, y: 200 });
+        await getVelocityXInput(this.driver).click();
+        await clearAndSendKeys(this.driver, '5', Key.ENTER);
+        await getUndoButton(this.driver).click();
+        await move(this.driver, { x: 200, y: 200 });
+        expect(await getVelocityCell(this.driver).getText()).toBe('(0,0)');
+    });
+
+    it('set velocity y', async function(this: Context) {
+        await selectAddParticleAction(this.driver);
+        await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
+        await click(this.driver, { x: 200, y: 200 });
+        await getVelocityYInput(this.driver).click();
+        await clearAndSendKeys(this.driver, '5', Key.ENTER);
+        await getUndoButton(this.driver).click();
+        await move(this.driver, { x: 200, y: 200 });
+        expect(await getVelocityCell(this.driver).getText()).toBe('(0,0)');
+    });
+
     it('set radius', async function(this: Context) {
         await selectAddParticleAction(this.driver);
         await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
@@ -104,26 +149,15 @@ describe('undo', function() {
         expect(await getWidth(getParticleCircle(this.driver))).toBe(10);
     });
 
-    it('set velocity x', async function(this: Context) {
+    it('set mass', async function(this: Context) {
         await selectAddParticleAction(this.driver);
-        await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
+        await addParticle(this.driver, { cx: 200, cy: 200, r: 10 });
         await click(this.driver, { x: 200, y: 200 });
-        await getVelocityXInput(this.driver).click();
-        await clearAndSendKeys(this.driver, '5', Key.ENTER);
+        await getMassInput(this.driver).click();
+        await clearAndSendKeys(this.driver, '100', Key.ENTER);
         await getUndoButton(this.driver).click();
-        await getStepButton(this.driver).click();
-        expect(await getCenterX(getParticleCircle(this.driver))).toBe(200);
-    });
-
-    it('set velocity y', async function(this: Context) {
-        await selectAddParticleAction(this.driver);
-        await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
         await click(this.driver, { x: 200, y: 200 });
-        await getVelocityYInput(this.driver).click();
-        await clearAndSendKeys(this.driver, '5', Key.ENTER);
-        await getUndoButton(this.driver).click();
-        await getStepButton(this.driver).click();
-        expect(await getCenterY(getParticleCircle(this.driver))).toBe(200);
+        expect(await getMassInput(this.driver).getAttribute('value')).toBe('4.1887902047863905');
     });
 
     describe('step', function() {
@@ -147,6 +181,32 @@ describe('undo', function() {
             await getStepButton(this.driver).click();
             await getUndoButton(this.driver).click();
             expect(await getCenterY(getParticleCircle(this.driver))).toBe(200);
+        });
+
+        it('velocity x', async function(this: Context) {
+            await selectIntegrateGravitySimulator(this.driver);
+            await selectAddParticleAction(this.driver);
+            await addParticle(this.driver, { cx: 180, cy: 140, r: 5 });
+            await addParticle(this.driver, { cx: 100, cy: 200, r: 5 });
+            await setMass(this.driver, getParticleCircle(this.driver, 1), 100000);
+            await setMass(this.driver, getParticleCircle(this.driver, 2), 10);
+            await getStepButton(this.driver).click();
+            await getUndoButton(this.driver).click();
+            await getParticleCircle(this.driver, 2).click();
+            expect(await getVelocityXInput(this.driver).getAttribute('value')).toBe('0');
+        });
+
+        it('velocity y', async function(this: Context) {
+            await selectIntegrateGravitySimulator(this.driver);
+            await selectAddParticleAction(this.driver);
+            await addParticle(this.driver, { cx: 180, cy: 140, r: 5 });
+            await addParticle(this.driver, { cx: 100, cy: 200, r: 5 });
+            await setMass(this.driver, getParticleCircle(this.driver, 1), 100000);
+            await setMass(this.driver, getParticleCircle(this.driver, 2), 10);
+            await getStepButton(this.driver).click();
+            await getUndoButton(this.driver).click();
+            await getParticleCircle(this.driver, 2).click();
+            expect(await getVelocityYInput(this.driver).getAttribute('value')).toBe('0');
         });
     });
 });

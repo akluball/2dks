@@ -14,7 +14,8 @@ import {
     getRadiusInput,
     getVelocityXInput,
     getStepButton,
-    getVelocityYInput
+    getVelocityYInput,
+    getMassInput
 } from '../element-getters';
 import {
     getLeftX,
@@ -233,7 +234,7 @@ describe('particle description edit', function() {
     });
 
     describe('velocity x', function() {
-        it('starts as 0', async function(this: Context) {
+        it('initially 0', async function(this: Context) {
             await selectAddParticleAction(this.driver);
             await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
             await click(this.driver, { x: 200, y: 200 });
@@ -282,7 +283,7 @@ describe('particle description edit', function() {
     });
 
     describe('velocity y', function() {
-        it('velocity y starts as 0', async function(this: Context) {
+        it('initially 0', async function(this: Context) {
             await selectAddParticleAction(this.driver);
             await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
             await click(this.driver, { x: 200, y: 200 });
@@ -327,6 +328,24 @@ describe('particle description edit', function() {
             await getVelocityYInput(this.driver).click();
             await clearAndSendKeys(this.driver, 'abc', Key.ENTER);
             expect(await getVelocityYInput(this.driver).getAttribute('value')).toBe('0');
+        });
+    });
+
+    describe('mass', function() {
+        it('initially 1/1000 particle volume', async function(this: Context) {
+            await selectAddParticleAction(this.driver);
+            await addParticle(this.driver, { cx: 200, cy: 200, r: 10 });
+            await click(this.driver, { x: 200, y: 200 });
+            expect(await getMassInput(this.driver).getAttribute('value')).toBe('4.1887902047863905');
+        });
+
+        it('updates input value', async function(this: Context) {
+            await selectAddParticleAction(this.driver);
+            await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
+            await click(this.driver, { x: 200, y: 200 });
+            await getMassInput(this.driver).click();
+            await clearAndSendKeys(this.driver, '100', Key.ENTER);
+            expect(await getMassInput(this.driver).getAttribute('value')).toBe('100');
         });
     });
 });

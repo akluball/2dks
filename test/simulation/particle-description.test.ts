@@ -16,7 +16,9 @@ import {
     getVelocityHeader,
     getPositionCell,
     getRadiusCell,
-    getVelocityCell
+    getVelocityCell,
+    getMassHeader,
+    getMassCell
 } from '../element-getters';
 import {
     getLeftX,
@@ -143,6 +145,13 @@ describe('particle description', function() {
         expect(await getVelocityHeader(this.driver).getText()).toBe('velocity');
     });
 
+    it('mass field', async function(this: Context) {
+        await selectAddParticleAction(this.driver);
+        await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
+        await move(this.driver, { x: 200, y: 200 });
+        expect(await getMassHeader(this.driver).getText()).toBe('mass');
+    });
+
     it('position is circle center', async function(this: Context) {
         await selectAddParticleAction(this.driver);
         await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
@@ -162,5 +171,12 @@ describe('particle description', function() {
         await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
         await move(this.driver, { x: 200, y: 200 });
         expect(await getVelocityCell(this.driver).getText()).toBe('(0,0)');
+    });
+
+    it('mass initially 1/1000 of volume', async function(this: Context) {
+        await selectAddParticleAction(this.driver);
+        await addParticle(this.driver, { cx: 200, cy: 200, r: 10 });
+        await move(this.driver, { x: 200, y: 200 });
+        expect(await getMassCell(this.driver).getText()).toBe('4.1887902047863905');
     });
 });

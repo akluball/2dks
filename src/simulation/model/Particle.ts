@@ -3,13 +3,15 @@ import { ReadonlyVector, distanceBetween } from './vector';
 
 export default class Particle {
     positionTimeSeries: TimeSeries<ReadonlyVector>;
+    velocityTimeSeries: TimeSeries<ReadonlyVector>;
     radius: number;
-    velocity: ReadonlyVector;
+    mass: number;
 
     constructor(time: number, center: ReadonlyVector, radius: number) {
         this.positionTimeSeries = new TimeSeries(time, center);
+        this.velocityTimeSeries = new TimeSeries(time, { x: 0, y: 0 });
         this.radius = radius;
-        this.velocity = { x: 0, y: 0 };
+        this.mass = 4 * Math.PI * (this.radius ** 3) / 3000;
     }
 
     getPosition(time: number): ReadonlyVector {
@@ -23,5 +25,6 @@ export default class Particle {
 
     clearAfter(time: number): void {
         this.positionTimeSeries.clearAfter(time);
+        this.velocityTimeSeries.clearAfter(time);
     }
 }

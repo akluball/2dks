@@ -12,7 +12,7 @@
     <g [attr.transform]="converter.modelToSvgTransform">
         <g
             particle-component
-            *ngFor="let particle of service.particles"
+            *ngFor="let particle of particles"
             [particle]="particle"
             (circleHover)="onCircleHover(particle)"
             (circleDehover)="onCircleDehover(particle)"
@@ -29,7 +29,9 @@
     </g>
 </svg>
 <toolbar
-    (actionSelect)="action=$event"
+    [(action)]="action"
+    [(gravitySimulator)]="gravitySimulator"
+    [(gravitationalConstant)]="gravitationalConstant"
     (undo)="undo()"
     (redo)="redo()"
     (step)="step()"

@@ -4,6 +4,7 @@ interface ParticleSnapshot {
     readonly radius: number;
     readonly velocityX: number;
     readonly velocityY: number;
+    readonly mass: number;
 }
 
 export default ParticleSnapshot;

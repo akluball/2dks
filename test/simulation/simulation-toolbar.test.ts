@@ -1,7 +1,7 @@
-import { By } from 'selenium-webdriver';
+import { By, Key } from 'selenium-webdriver';
 import { Context, setup, cleanup } from '../context';
-import { addParticle, relDrag, clickElement, move } from '../actions';
-import { toggle_TRANSITION_MILLIS } from '../constant';
+import { relDrag, clickElement, move, clearAndSendKeys, click } from '../actions';
+import { TOGGLE_TRANSITION_MILLIS } from '../constant';
 import {
     getToolbar,
     getToolbarContent,
@@ -12,10 +12,11 @@ import {
     getStepButton,
     getGridToggle,
     getBody,
-    getParticleCircles,
     getMouseTrackerToggle,
     getMouseTracker,
-    getMouseTrackers
+    getMouseTrackers,
+    getGravitySimulatorSelect,
+    getGravitationalConstantInput
 } from '../element-getters';
 import {
     LEFT_ARROW,
@@ -39,7 +40,8 @@ import {
     resizeBody,
     count,
     getParent,
-    getTopRight
+    getTopRight,
+    getSelectedOption
 } from '../util';
 
 describe('simulation toolbar component', function() {
@@ -96,21 +98,21 @@ describe('simulation toolbar component', function() {
     describe('hidden', function() {
         it('content left x is parent left x', async function(this: Context) {
             await getToolbarToggle(this.driver).click();
-            await sleep(toggle_TRANSITION_MILLIS);
+            await sleep(TOGGLE_TRANSITION_MILLIS);
             const content = getToolbarContent(this.driver);
             expect(await getLeftX(content)).toBe(await getParentLeftX(content));
         });
 
         it('content width is border width', async function(this: Context) {
             await getToolbarToggle(this.driver).click();
-            await sleep(toggle_TRANSITION_MILLIS);
+            await sleep(TOGGLE_TRANSITION_MILLIS);
             expect(await getWidth(getToolbarContent(this.driver))).toBe(4);
         });
 
         it('content right x is toggle left x', async function(this: Context) {
             const toggle = getToolbarToggle(this.driver);
             await toggle.click();
-            await sleep(toggle_TRANSITION_MILLIS);
+            await sleep(TOGGLE_TRANSITION_MILLIS);
             const content = getToolbarContent(this.driver);
             expect(await getRightX(content)).toBe(await getLeftX(toggle));
         });
@@ -118,16 +120,16 @@ describe('simulation toolbar component', function() {
         it('toggle text is right arrow', async function(this: Context) {
             const toggle = getToolbarToggle(this.driver);
             await toggle.click();
-            await sleep(toggle_TRANSITION_MILLIS);
+            await sleep(TOGGLE_TRANSITION_MILLIS);
             expect(await toggle.getText()).toBe(RIGHT_ARROW);
         });
 
         it('toggle click makes contents visible', async function(this: Context) {
             const toggle = getToolbarToggle(this.driver);
             await toggle.click();
-            await sleep(toggle_TRANSITION_MILLIS);
+            await sleep(TOGGLE_TRANSITION_MILLIS);
             await toggle.click();
-            await sleep(toggle_TRANSITION_MILLIS);
+            await sleep(TOGGLE_TRANSITION_MILLIS);
             expect(await toggle.getText()).toBe(LEFT_ARROW);
         });
     });
@@ -157,18 +159,18 @@ describe('simulation toolbar component', function() {
 
     describe('action select', async function(this: Context) {
         it('defaults to add particle option', async function(this: Context) {
-            await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
-            expect(await count(getParticleCircles(this.driver))).toBe(1);
+            const defaultOption = getSelectedOption(getActionSelect(this.driver));
+            expect(await defaultOption.getText()).toBe('add particle');
         });
 
         it('add particle option', async function(this: Context) {
-            const addParticle = await getActionSelect(this.driver).findElement(By.css('option[value=add-particle]'));
-            expect(await addParticle.getText()).toBe('add particle');
+            const option = await getActionSelect(this.driver).findElement(By.css('option:nth-of-type(1)'));
+            expect(await option.getText()).toBe('add particle');
         });
 
         it('zoom/pan option', async function(this: Context) {
-            const zoomPan = await getActionSelect(this.driver).findElement(By.css('option[value=zoom-pan]'));
-            expect(await zoomPan.getText()).toBe('zoom/pan');
+            const option = await getActionSelect(this.driver).findElement(By.css('option:nth-of-type(2)'));
+            expect(await option.getText()).toBe('zoom/pan');
         });
     });
 
@@ -217,6 +219,48 @@ describe('simulation toolbar component', function() {
             await clickElement(getMouseTrackerToggle(this.driver));
             await move(this.driver, { x: 200, y: 200 });
             expect(await getMouseTracker(this.driver).getText()).toBe(`(200,${this.height - 200})`);
+        });
+    });
+
+    describe('gravity simulator', function() {
+        it('defaults to integrate', async function(this: Context) {
+            const defaultOption = getSelectedOption(getGravitySimulatorSelect(this.driver));
+            expect(await defaultOption.getText()).toBe('integrate');
+        });
+
+        it('integrate option', async function(this: Context) {
+            const option = getGravitySimulatorSelect(this.driver).findElement(By.css('option:nth-of-type(1)'));
+            expect(await option.getText()).toBe('integrate');
+        });
+
+        it('none option', async function(this: Context) {
+            const option = getGravitySimulatorSelect(this.driver).findElement(By.css('option:nth-of-type(2)'));
+            expect(await option.getText()).toBe('none');
+        });
+    });
+
+    describe('gravitational constant', async function(this: Context) {
+        it('initially 1', async function(this: Context) {
+            expect(await getGravitationalConstantInput(this.driver).getAttribute('value')).toBe('1');
+        });
+
+        it('resets on blur', async function(this: Context) {
+            await getGravitationalConstantInput(this.driver).click();
+            await clearAndSendKeys(this.driver, '.5');
+            await click(this.driver, { x: 1, y: 1 });
+            expect(await getGravitationalConstantInput(this.driver).getAttribute('value')).toBe('1');
+        });
+
+        it('resets on nonnumber input', async function(this: Context) {
+            await getGravitationalConstantInput(this.driver).click();
+            await clearAndSendKeys(this.driver, 'abc', Key.ENTER);
+            expect(await getGravitationalConstantInput(this.driver).getAttribute('value')).toBe('1');
+        });
+
+        it('updates on enter', async function(this: Context) {
+            await getGravitationalConstantInput(this.driver).click();
+            await clearAndSendKeys(this.driver, '.5', Key.ENTER);
+            expect(await getGravitationalConstantInput(this.driver).getAttribute('value')).toBe('0.5');
         });
     });
 });

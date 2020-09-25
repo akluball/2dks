@@ -1,6 +1,6 @@
 import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 
-const floatRegex = /^[-+]?\d+.?\d*$/;
+const floatRegex = /^[-+]?(\d+\.?\d*)|(\d*\.?\d+)$/;
 
 @Component({
     selector: 'number-edit',

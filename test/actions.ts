@@ -1,15 +1,15 @@
 import { ThenableWebDriver, Key, By, Origin, WebElementPromise } from 'selenium-webdriver';
-import { getActionSelect } from './element-getters';
+import { getActionSelect, getGravitySimulatorSelect, getMassInput } from './element-getters';
 import { hScrollTo, Vector, DeltaVector } from './util';
 
-const ACTIONS = {
+const Action = {
     ADD_PARTICLE: 'add particle',
     ZOOM_PAN: 'zoom pan'
 };
 
 async function selectAction(driver: ThenableWebDriver, action: string): Promise<void> {
     const actionSelect = getActionSelect(driver);
-    const keys = Object.keys(ACTIONS).map(() => Key.UP);
+    const keys = Object.keys(Action).map(() => Key.UP);
     for (const option of await actionSelect.findElements(By.xpath('./option'))) {
         if (await option.getText() === action) {
             break;
@@ -24,11 +24,40 @@ async function selectAction(driver: ThenableWebDriver, action: string): Promise<
 }
 
 export function selectAddParticleAction(driver: ThenableWebDriver): Promise<void> {
-    return selectAction(driver, ACTIONS.ADD_PARTICLE);
+    return selectAction(driver, Action.ADD_PARTICLE);
 }
 
 export function selectZoomPanAction(driver: ThenableWebDriver): Promise<void> {
-    return selectAction(driver, ACTIONS.ZOOM_PAN);
+    return selectAction(driver, Action.ZOOM_PAN);
+}
+
+const GravitySimulator = {
+    integrate: 'integrate',
+    none: 'none'
+};
+
+async function selectGravitySimulator(driver: ThenableWebDriver, action: string): Promise<void> {
+    const actionSelect = getGravitySimulatorSelect(driver);
+    const keys = Object.keys(GravitySimulator).map(() => Key.UP);
+    for (const option of await actionSelect.findElements(By.xpath('./option'))) {
+        if (await option.getText() === action) {
+            break;
+        }
+        keys.push(Key.DOWN);
+    }
+    keys.push(Key.ENTER);
+    await driver.actions()
+                .click(actionSelect)
+                .sendKeys(...keys)
+                .perform();
+}
+
+export function selectIntegrateGravitySimulator(driver: ThenableWebDriver): Promise<void> {
+    return selectGravitySimulator(driver, GravitySimulator.integrate);
+}
+
+export function selectNoneGravitySimulator(driver: ThenableWebDriver): Promise<void> {
+    return selectGravitySimulator(driver, GravitySimulator.none);
 }
 
 export function move(driver: ThenableWebDriver, { x, y }: { x: number, y: number }): Promise<void> {
@@ -127,4 +156,10 @@ function wheelScript(element: Element, deltaY: number, count: number) {
 export function wheel(element: WebElementPromise, direction: WheelDirection, count = 1): Promise<void> {
     return element.getDriver()
                   .executeScript(wheelScript, element, direction === WheelDirection.UP ? -1 : 1, count);
+}
+
+export async function setMass(driver: ThenableWebDriver, particle: WebElementPromise, mass: number): Promise<void> {
+    await particle.click();
+    await getMassInput(driver).click();
+    await clearAndSendKeys(driver, mass.toString(), Key.ENTER);
 }

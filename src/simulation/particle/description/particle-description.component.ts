@@ -15,6 +15,8 @@ export class ParticleDescriptionComponent {
     @Input() focus!: boolean;
     symbol = symbol;
 
+    Number = Number;
+
     constructor(private service: SimulationService) {
     }
 
@@ -52,6 +54,13 @@ export class ParticleDescriptionComponent {
         this.service.setVelocityY(this.particle, velocityY);
         if (this.particle.velocityY === velocityY) {
             numberEdit.onEditSuccess();
+        }
+    }
+
+    setMass(mass: number, massEdit: NumberEditComponent): void {
+        this.service.setMass(this.particle, mass);
+        if (this.particle.mass === mass) {
+            massEdit.onEditSuccess();
         }
     }
 }

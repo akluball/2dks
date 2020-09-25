@@ -5,9 +5,15 @@
     (mouseleave)="endScroll()"
     (mouseup)="endScroll()"
 >
-    <select (input)="actionSelect.emit($event.target.value)">
-        <option [value]="Action.ADD_PARTICLE">add particle</option>
-        <option [value]="Action.ZOOM_PAN">zoom/pan</option>
+    <select (input)="actionChange.emit($event.target.value)">
+        <option
+            [value]="Action.ADD_PARTICLE"
+            [selected]="action === Action.ADD_PARTICLE"
+        >add particle</option>
+        <option
+            [value]="Action.ZOOM_PAN"
+            [selected]="action === Action.ZOOM_PAN"
+        >zoom/pan</option>
     </select>
     <button class="symbol" (click)="undo.emit()">{{ symbol.UNDO }}</button>
     <button class="symbol" (click)="redo.emit()">{{ symbol.REDO }}</button>
@@ -20,6 +26,20 @@
         [style.color]="showTracker ? 'black' : 'gray'"
         (click)="showTracker = !showTracker; showTrackerChange.emit(showTracker)"
     >tracker</button>
+    <select (input)="gravitySimulatorChange.emit($event.target.value)">
+        <option
+            [value]="GravitySimulator.INTEGRATE"
+            [selected]="gravitySimulator === GravitySimulator.INTEGRATE"
+        >integrate</option>
+        <option
+            [value]="GravitySimulator.NONE"
+            [selected]="gravitySimulator === GravitySimulator.NONE"
+        >none</option>
+    </select>
+    <number-edit
+        [value]="gravitationalConstant"
+        (edit)="gravitationalConstantChange.emit($event)"
+    ></number-edit>
 </div>
 
 <div class="toggle symbol" (click)="visible = !visible">
