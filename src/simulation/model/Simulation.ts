@@ -1,7 +1,10 @@
-import Particle from './Particle';
-import { distanceBetween, ReadonlyVector, Vector } from './vector';
-import ParticleSnapshot from './ParticleSnapshot';
+import CollisionSimulator from './CollisionSimulator';
 import GravitySimulator from './GravitySimulator';
+import Particle from './Particle';
+import ParticleSnapshot from './ParticleSnapshot';
+import PriorityQueue from './PriorityQueue';
+import TimeSeries from './TimeSeries';
+import { distanceBetween, ReadonlyVector } from './geometry';
 
 interface SimulationClock {
     readonly time: number;
@@ -21,10 +24,6 @@ class ParticleSnapshotImpl implements ParticleSnapshot {
                             .firstNotAfter(this.clock.time).y;
     }
 
-    get radius(): number {
-        return this.particle.radius;
-    }
-
     get velocityX(): number {
         return this.particle.velocityTimeSeries
                             .firstNotAfter(this.clock.time).x;
@@ -35,65 +34,175 @@ class ParticleSnapshotImpl implements ParticleSnapshot {
                             .firstNotAfter(this.clock.time).y;
     }
 
+    get radius(): number {
+        return this.particle.radius;
+    }
+
     get mass(): number {
         return this.particle.mass;
     }
 }
 
-class ParticleDelta {
-    private positionDelta: Vector = { x: 0, y: 0 };
-    private velocityDelta: Vector = { x: 0, y: 0 };
+function findQuadraticRoots(a: number, b: number, c: number): [number, number] {
+    const term = ((b ** 2) - 4 * a * c) ** .5;
+    if (term < 0) {
+        return [ NaN, NaN ];
+    }
+    return [ (-b + term) / (2 * a), (-b - term) / (2 * a) ];
+}
 
-    constructor(readonly particle: Particle) {
+// invariant - last position and velocity should have the same timestamp time
+class ParticleStep {
+    private acceleration: ReadonlyVector;
+    private positions: TimeSeries<ReadonlyVector>;
+    private velocities: TimeSeries<ReadonlyVector>;
+
+    constructor(private particle: Particle) {
+        this.acceleration = { x: 0, y: 0 };
+        this.positions = new TimeSeries(0, particle.positionTimeSeries.last);
+        this.velocities = new TimeSeries(0, particle.velocityTimeSeries.last);
     }
 
-    get initialPosition(): ReadonlyVector {
-        return this.particle.positionTimeSeries.last;
+    get mass(): number {
+        return this.particle.mass;
     }
 
-    get initialVelocity(): ReadonlyVector {
-        return this.particle.velocityTimeSeries.last;
+    positionAt(time: number): ReadonlyVector {
+        const { time: positionTime, val: position } = this.positions.firstNotAfterTimestamped(time);
+        const velocity = this.velocityAt(time);
+        const timeDelta = time - positionTime;
+        // assumes velocity is constant over time period (implied by invariant)
+        return {
+            x: position.x + velocity.x * timeDelta,
+            y: position.y + velocity.y * timeDelta,
+        };
     }
 
-    addPositionDelta(delta: ReadonlyVector) {
-        this.positionDelta.x += delta.x;
-        this.positionDelta.y += delta.y;
+    velocityAt(time: number): ReadonlyVector {
+        return this.velocities.firstNotAfter(time);
     }
 
-    addVelocityDelta(delta: ReadonlyVector) {
-        this.velocityDelta.x += delta.x;
-        this.velocityDelta.y += delta.y;
+    setKinematics(time: number, position: ReadonlyVector, velocity: ReadonlyVector) {
+        this.positions.addLast({ time, val: position });
+        this.velocities.addLast({ time, val: velocity });
     }
 
-    apply(time: number): void {
-        const position = {
-            x: this.initialPosition.x + this.positionDelta.x,
-            y: this.initialPosition.y + this.positionDelta.y
+    simulateConstantForce(force: ReadonlyVector): void {
+        this.acceleration = {
+            x: force.x / this.particle.mass,
+            y: force.y / this.particle.mass
         };
         const velocity = {
-            x: this.initialVelocity.x + this.velocityDelta.x,
-            y: this.initialVelocity.y + this.velocityDelta.y,
+            x: this.velocities.last.x + this.acceleration.x / 2,
+            y: this.velocities.last.y + this.acceleration.y / 2
         };
-        this.particle.positionTimeSeries.addLast({ time, val: position });
-        this.particle.velocityTimeSeries.addLast({ time, val: velocity });
+        this.velocities.addLast({ time: this.velocities.lastTime, val: velocity });
+    }
+
+    detectCollisionTimes(other: ParticleStep): number[] {
+        const startTime = Math.max(this.positions.lastTime, other.positions.lastTime);
+        const endTime = 1;
+        const start = this.positionAt(startTime);
+        const end = this.positionAt(endTime);
+        const otherStart = other.positionAt(startTime);
+        const otherEnd = other.positionAt(endTime);
+        const deltaXSum = otherEnd.x - otherStart.x - end.x + start.x;
+        const deltaYSum = otherEnd.y - otherStart.y - end.y + start.y;
+        const radiusSum = this.particle.radius + other.particle.radius;
+        // particle positions are parameterized from start position (time 0) to end position (time 1)
+        // the quadratic below results from comparing the distance between particle positions to the radius sum
+        const roots = findQuadraticRoots(deltaXSum ** 2 + deltaYSum ** 2,
+                                         2 * ((otherStart.x - start.x) * deltaXSum + (otherStart.y - start.y) * deltaYSum),
+                                         (otherStart.x - start.x) ** 2 + (otherStart.y - start.y) ** 2 - radiusSum ** 2);
+        const collisionTimes: number[] = [];
+        // if the collision is at time 0, verify particles are moving in the same direction
+        if ((roots[0] === 0 && roots[1] > 0) || (roots[0] > 0 && roots[0] <= 1)) {
+            collisionTimes.push(startTime + (endTime - startTime) * roots[0]);
+        }
+        if ((roots[1] === 0 && roots[0] > 0) || (roots[1] > 0 && roots[1] <= 1)) {
+            collisionTimes.push(startTime + (endTime - startTime) * roots[1]);
+        }
+        return collisionTimes;
+    }
+
+    apply(time: number) {
+        const finalVelocity = {
+            x: this.velocities.last.x + this.acceleration.x / 2,
+            y: this.velocities.last.y + this.acceleration.y / 2
+        };
+        this.particle.positionTimeSeries.addLast({ time, val: this.positionAt(1) });
+        this.particle.velocityTimeSeries.addLast({ time, val: finalVelocity });
     }
 }
 
-function simulateConstantVelocity(deltas: ParticleDelta[]) {
-    for (const delta of deltas) {
-        delta.addPositionDelta(delta.initialVelocity);
+class ParticleStepCollision {
+    constructor(private collisionTime: number,
+        readonly a: ParticleStep,
+        readonly b: ParticleStep) {
+    }
+
+    occursBefore(other: ParticleStepCollision): boolean {
+        return this.collisionTime < other.collisionTime;
+    }
+
+    invalidates(other: ParticleStepCollision) {
+        return this.a === other.a || this.a === other.b || this.b === other.a || this.b === other.b;
+    }
+
+    apply() {
+        const aCollisionPosition = this.a.positionAt(this.collisionTime);
+        const bCollisionPosition = this.b.positionAt(this.collisionTime);
+        const aPreCollisionVelocity = this.a.velocityAt(this.collisionTime);
+        const bPreCollisionVelocity = this.b.velocityAt(this.collisionTime);
+        let aCollisionVelocity: ReadonlyVector;
+        let bCollisionVelocity: ReadonlyVector;
+        const slope = (bCollisionPosition.y - aCollisionPosition.y) / (bCollisionPosition.x - aCollisionPosition.x);
+        if (!isFinite(slope)) {
+            aCollisionVelocity = {
+                x: 0,
+                y: aPreCollisionVelocity.y
+            };
+            bCollisionVelocity = {
+                x: 0,
+                y: bPreCollisionVelocity.y
+            };
+        } else {
+            // velocity components perpendicular to the collision plane
+            aCollisionVelocity = {
+                x: (aPreCollisionVelocity.x + slope * aPreCollisionVelocity.y) / (1 + slope ** 2),
+                y: (slope * aPreCollisionVelocity.x + (slope ** 2) * aPreCollisionVelocity.y) / (1 + slope ** 2)
+            };
+            bCollisionVelocity = {
+                x: (bPreCollisionVelocity.x + slope * bPreCollisionVelocity.y) / (1 + slope ** 2),
+                y: (slope * bPreCollisionVelocity.x + (slope ** 2) * bPreCollisionVelocity.y) / (1 + slope ** 2)
+            };
+        }
+        const aMass = this.a.mass;
+        const bMass = this.b.mass;
+        const totalMass = aMass + bMass;
+        // post elastic collision velocity (momentum and kinetic energy conserved)
+        const aPostCollisionVelocity = {
+            x: (aPreCollisionVelocity.x - aCollisionVelocity.x) + ((aMass - bMass) * aCollisionVelocity.x + 2 * bMass * bCollisionVelocity.x) / totalMass,
+            y: (aPreCollisionVelocity.y - aCollisionVelocity.y) + ((aMass - bMass) * aCollisionVelocity.y + 2 * bMass * bCollisionVelocity.y) / totalMass
+        };
+        this.a.setKinematics(this.collisionTime, aCollisionPosition, aPostCollisionVelocity);
+        const bPostCollisionVelocity = {
+            x: (bPreCollisionVelocity.x - bCollisionVelocity.x) + (2 * aMass * aCollisionVelocity.x + (bMass - aMass) * bCollisionVelocity.x) / totalMass,
+            y: (bPreCollisionVelocity.y - bCollisionVelocity.y) + (2 * aMass * aCollisionVelocity.y + (bMass - aMass) * bCollisionVelocity.y) / totalMass
+        };
+        this.b.setKinematics(this.collisionTime, bCollisionPosition, bPostCollisionVelocity);
     }
 }
 
 function computeGravitationalForce(gravitationalConstant: number,
-                                   particle: Particle,
-                                   other: Particle): ReadonlyVector {
-    const position = particle.positionTimeSeries.last;
-    const otherPosition = other.positionTimeSeries.last;
+                                   step: ParticleStep,
+                                   other: ParticleStep): ReadonlyVector {
+    const position = step.positionAt(0);
+    const otherPosition = other.positionAt(0);
     const xDistance = otherPosition.x - position.x;
     const yDistance = otherPosition.y - position.y;
     const distanceSquared = xDistance ** 2 + yDistance ** 2;
-    const forceMagnitude = gravitationalConstant * particle.mass * other.mass / distanceSquared;
+    const forceMagnitude = gravitationalConstant * step.mass * other.mass / distanceSquared;
     const distance = distanceSquared ** .5;
     return {
         x: forceMagnitude * xDistance / distance,
@@ -101,28 +210,53 @@ function computeGravitationalForce(gravitationalConstant: number,
     };
 }
 
-function simulateGravity(gravitationalConstant: number, deltas: ParticleDelta[]) {
-    for (const delta of deltas) {
+function simulateGravity(gravitationalConstant: number, steps: ParticleStep[]) {
+    for (const step of steps) {
         const totalGravitationalForce = { x: 0, y: 0 };
-        for (const other of deltas) {
-            if (other !== delta) {
+        for (const other of steps) {
+            if (other !== step) {
                 const gravitationalForce = computeGravitationalForce(gravitationalConstant,
-                                                                     delta.particle,
-                                                                     other.particle);
+                                                                     step,
+                                                                     other);
                 totalGravitationalForce.x += gravitationalForce.x;
                 totalGravitationalForce.y += gravitationalForce.y;
             }
         }
-        const acceleration = {
-            x: totalGravitationalForce.x / delta.particle.mass,
-            y: totalGravitationalForce.y / delta.particle.mass
-        };
-        delta.addPositionDelta({ x: acceleration.x / 2, y: acceleration.y / 2 });
-        delta.addVelocityDelta(acceleration);
+        step.simulateConstantForce(totalGravitationalForce);
+    }
+}
+
+function simulateElasticCollisions(steps: ParticleStep[]) {
+    const collisions = new PriorityQueue<ParticleStepCollision>((a, b) => a.occursBefore(b));
+    for (let i = 0; i < steps.length; i++) {
+        for (let j = i + 1; j < steps.length; j++) {
+            for (const collisionTime of steps[i].detectCollisionTimes(steps[j])) {
+                collisions.add(new ParticleStepCollision(collisionTime, steps[i], steps[j]));
+            }
+        }
+    }
+    while (!collisions.isEmpty()) {
+        const collision = collisions.extract();
+        collision.apply();
+        collisions.removeIf(collision.invalidates.bind(collision));
+        const { a, b } = collision;
+        for (let i = 0; i < steps.length; i++) {
+            if (steps[i] !== a) {
+                for (const collisionTime of a.detectCollisionTimes(steps[i])) {
+                    collisions.add(new ParticleStepCollision(collisionTime, a, steps[i]));
+                }
+            }
+            if (steps[i] !== b) {
+                for (const collisionTime of b.detectCollisionTimes(steps[i])) {
+                    collisions.add(new ParticleStepCollision(collisionTime, b, steps[i]));
+                }
+            }
+        }
     }
 }
 
 export default class Simulation {
+    collisionSimulator = CollisionSimulator.ELASTIC;
     gravitySimulator = GravitySimulator.INTEGRATE;
     gravitationalConstant = 1;
     private clock = { time: 0 };
@@ -131,13 +265,15 @@ export default class Simulation {
     // precondition - particle state time series do no surpass current time
     step(): void {
         this.clock.time++;
-        const deltas = this.particles.map(particle => new ParticleDelta(particle));
-        simulateConstantVelocity(deltas);
+        const steps = this.particles.map(particle => new ParticleStep(particle));
         if (this.gravitySimulator === GravitySimulator.INTEGRATE) {
-            simulateGravity(this.gravitationalConstant, deltas);
+            simulateGravity(this.gravitationalConstant, steps);
         }
-        for (const delta of deltas) {
-            delta.apply(this.clock.time);
+        if (this.collisionSimulator === CollisionSimulator.ELASTIC) {
+            simulateElasticCollisions(steps);
+        }
+        for (const step of steps) {
+            step.apply(this.clock.time);
         }
     }
 

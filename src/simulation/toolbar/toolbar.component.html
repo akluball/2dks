@@ -40,6 +40,16 @@
         [value]="gravitationalConstant"
         (edit)="gravitationalConstantChange.emit($event)"
     ></number-edit>
+    <select (input)="collisionSimulatorChange.emit($event.target.value)">
+        <option
+            [value]="CollisionSimulator.ELASTIC"
+            [selected]="collisionSimulator === CollisionSimulator.ELASTIC"
+        >elastic</option>
+        <option
+            [value]="CollisionSimulator.NONE"
+            [selected]="collisionSimulator === CollisionSimulator.NONE"
+        >none</option>
+    </select>
 </div>
 
 <div class="toggle symbol" (click)="visible = !visible">

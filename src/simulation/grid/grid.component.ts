@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import CoordinateConverter, { PositionOnlyViewport } from '../CoordinateConverter';
-import { ReadonlyVector } from '../model/vector';
+import { ReadonlyVector } from '../model/geometry';
 
 interface LineSegment {
     readonly label: string;

@@ -1,5 +1,5 @@
 import TimeSeries from './TimeSeries';
-import { ReadonlyVector, distanceBetween } from './vector';
+import { ReadonlyVector, distanceBetween } from './geometry';
 
 export default class Particle {
     positionTimeSeries: TimeSeries<ReadonlyVector>;

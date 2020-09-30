@@ -11,6 +11,7 @@ import {
     ChangeDetectorRef,
     Input
 } from '@angular/core';
+import CollisionSimulator from '../model/CollisionSimulator';
 import GravitySimulator from '../model/GravitySimulator';
 import * as symbol from '../../symbol';
 
@@ -32,6 +33,8 @@ export class ToolbarComponent implements AfterViewInit, OnDestroy {
     @Output() gravitySimulatorChange = new EventEmitter<GravitySimulator>();
     @Input() gravitationalConstant!: number;
     @Output() gravitationalConstantChange = new EventEmitter<number>();
+    @Input() collisionSimulator!: CollisionSimulator;
+    @Output() collisionSimulatorChange = new EventEmitter<CollisionSimulator>();
     @Output() undo = new EventEmitter<void>();
     @Output() redo = new EventEmitter<void>();
     @Output() step = new EventEmitter<void>();
@@ -41,6 +44,7 @@ export class ToolbarComponent implements AfterViewInit, OnDestroy {
     readonly symbol = symbol;
     Action = Action;
     GravitySimulator = GravitySimulator;
+    CollisionSimulator = CollisionSimulator;
 
     visible = true;
     showGrid = false;

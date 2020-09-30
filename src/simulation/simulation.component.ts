@@ -19,8 +19,9 @@ import { Action } from './toolbar/toolbar.component';
 import CoordinateConverter, { SvgViewport } from './CoordinateConverter';
 import GravitySimulator from './model/GravitySimulator';
 import ParticleSnapshot from './model/ParticleSnapshot';
-import { ReadonlyVector, distanceBetween } from './model/vector';
+import { ReadonlyVector, distanceBetween } from './model/geometry';
 import { nextTick } from '../util';
+import CollisionSimulator from './model/CollisionSimulator';
 
 interface PendingParticle {
     cx: number;
@@ -48,7 +49,6 @@ export class SimulationComponent implements AfterViewInit, OnDestroy {
     described: ParticleSnapshot | undefined;
     circleHover = false;
     circleFocus = false;
-    descriptionHover = false;
     descriptionFocus = false;
     panReference: ReadonlyVector | undefined;
 
@@ -95,6 +95,14 @@ export class SimulationComponent implements AfterViewInit, OnDestroy {
         this.service.gravitationalConstant = gravitationalConstant;
     }
 
+    get collisionSimulator(): CollisionSimulator {
+        return this.service.collisionSimulator;
+    }
+
+    set collisionSimulator(collisionSimulator: CollisionSimulator) {
+        this.service.collisionSimulator = collisionSimulator;
+    }
+
     @HostListener('window:resize')
     noOp(): void { // eslint-disable-next-line no-empty
     }
@@ -114,10 +122,10 @@ export class SimulationComponent implements AfterViewInit, OnDestroy {
     }
 
     onCircleHover(particle: ParticleSnapshot): void {
-        if (this.panReference) {
+        if (this.panReference || this.pendingParticle) {
             return;
         }
-        if (!this.pendingParticle && !this.circleFocus && !this.descriptionFocus) {
+        if (!(this.circleFocus || this.descriptionFocus)) {
             this.circleHover = true;
             this.described = particle;
         }
@@ -127,7 +135,7 @@ export class SimulationComponent implements AfterViewInit, OnDestroy {
         nextTick(() => {
             if (particle === this.described) {
                 this.circleHover = false;
-                if (!(this.circleFocus || this.descriptionHover || this.descriptionFocus)) {
+                if (!(this.circleFocus || this.descriptionFocus)) {
                     this.described = undefined;
                 }
             }
@@ -145,7 +153,7 @@ export class SimulationComponent implements AfterViewInit, OnDestroy {
         nextTick(() => {
             if (particle === this.described) {
                 this.circleFocus = false;
-                if (!(this.circleFocus || this.descriptionHover || this.descriptionFocus)) {
+                if (!(this.circleFocus || this.descriptionFocus || this.circleHover)) {
                     this.described = undefined;
                 }
             }

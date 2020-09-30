@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { Vector } from '../model/vector';
+import { Vector } from '../model/geometry';
 
 const unneccesaryFractionPartRegex = /\.?0{1,5}$/;
 

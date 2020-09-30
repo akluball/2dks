@@ -11,6 +11,11 @@ class TimeSeries<T> {
     }
 
     // precondition - nonempty
+    get lastTime(): number {
+        return this.series[this.series.length - 1].time;
+    }
+
+    // precondition - nonempty
     get last(): T {
         return this.series[this.series.length - 1].val;
     }
@@ -57,7 +62,13 @@ class TimeSeries<T> {
     // precondition - this.series nonempty
     // precondition - time >= this.series[0].time
     firstNotAfter(time: number): T {
-        return this.series[this.firstNotAfterIndex(time)].val;
+        return this.firstNotAfterTimestamped(time).val;
+    }
+
+    // precondition - this.series nonempty
+    // precondition - time >= this.series[0].time
+    firstNotAfterTimestamped(time: number): Timestamped<T> {
+        return this.series[this.firstNotAfterIndex(time)];
     }
 }
 

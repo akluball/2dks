@@ -16,7 +16,8 @@ import {
     getMouseTracker,
     getMouseTrackers,
     getGravitySimulatorSelect,
-    getGravitationalConstantInput
+    getGravitationalConstantInput,
+    getCollisionSimulatorSelect
 } from '../element-getters';
 import {
     LEFT_ARROW,
@@ -159,8 +160,8 @@ describe('simulation toolbar component', function() {
 
     describe('action select', async function(this: Context) {
         it('defaults to add particle option', async function(this: Context) {
-            const defaultOption = getSelectedOption(getActionSelect(this.driver));
-            expect(await defaultOption.getText()).toBe('add particle');
+            const option = getSelectedOption(getActionSelect(this.driver));
+            expect(await option.getText()).toBe('add particle');
         });
 
         it('add particle option', async function(this: Context) {
@@ -224,8 +225,8 @@ describe('simulation toolbar component', function() {
 
     describe('gravity simulator', function() {
         it('defaults to integrate', async function(this: Context) {
-            const defaultOption = getSelectedOption(getGravitySimulatorSelect(this.driver));
-            expect(await defaultOption.getText()).toBe('integrate');
+            const option = getSelectedOption(getGravitySimulatorSelect(this.driver));
+            expect(await option.getText()).toBe('integrate');
         });
 
         it('integrate option', async function(this: Context) {
@@ -261,6 +262,23 @@ describe('simulation toolbar component', function() {
             await getGravitationalConstantInput(this.driver).click();
             await clearAndSendKeys(this.driver, '.5', Key.ENTER);
             expect(await getGravitationalConstantInput(this.driver).getAttribute('value')).toBe('0.5');
+        });
+    });
+
+    describe('collision simulator', async function(this: Context) {
+        it('defaults to elastic', async function(this: Context) {
+            const option = getSelectedOption(getCollisionSimulatorSelect(this.driver));
+            expect(await option.getText()).toBe('elastic');
+        });
+
+        it('elastic option', async function(this: Context) {
+            const option = await getCollisionSimulatorSelect(this.driver).findElement(By.css('option:nth-of-type(1)'));
+            expect(await option.getText()).toBe('elastic');
+        });
+
+        it('none option', async function(this: Context) {
+            const option = await getCollisionSimulatorSelect(this.driver).findElement(By.css('option:nth-of-type(2)'));
+            expect(await option.getText()).toBe('none');
         });
     });
 });

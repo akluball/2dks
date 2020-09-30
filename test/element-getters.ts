@@ -1,4 +1,4 @@
-import { ThenableWebDriver, By, WebElement, WebElementPromise, Locator } from 'selenium-webdriver';
+import { ThenableWebDriver, By, WebElement, WebElementPromise, Locator, WebDriver } from 'selenium-webdriver';
 
 export function getBody(driver: ThenableWebDriver): WebElementPromise {
     return driver.findElement(By.css('body'));
@@ -42,6 +42,10 @@ export function getGravitySimulatorSelect(driver: ThenableWebDriver): WebElement
 
 export function getGravitationalConstantInput(driver: ThenableWebDriver): WebElementPromise {
     return driver.findElement(By.css('simulation > toolbar > .content > number-edit > input'));
+}
+
+export function getCollisionSimulatorSelect(driver: ThenableWebDriver): WebElementPromise {
+    return driver.findElement(toolbarSelect(3));
 }
 
 function toolbarButton(i: number): Locator {
@@ -104,6 +108,10 @@ export function getParticleCircle(driver: ThenableWebDriver, i = 1): WebElementP
     return driver.findElement(By.css(`svg > g > g[particle-component]:nth-of-type(${i}) > circle`));
 }
 
+export function getLastParticleCircle(driver: ThenableWebDriver): WebElementPromise {
+    return driver.findElement(By.css('svg > g > g[particle-component]:last-of-type > circle'));
+}
+
 export function getParticleCircles(driver: ThenableWebDriver): Promise<WebElement[]> {
     return driver.findElements(By.css('svg > g > g[particle-component] > circle'));
 }
@@ -144,12 +152,12 @@ export function getPositionCell(driver: ThenableWebDriver): WebElementPromise {
     return driver.findElement(descriptionCell(1));
 }
 
-export function getRadiusCell(driver: ThenableWebDriver): WebElementPromise {
-    return driver.findElement(descriptionCell(2));
-}
-
 export function getVelocityCell(driver: ThenableWebDriver): WebElementPromise {
     return driver.findElement(descriptionCell(3));
+}
+
+export function getRadiusCell(driver: ThenableWebDriver): WebElementPromise {
+    return driver.findElement(descriptionCell(2));
 }
 
 export function getMassCell(driver: ThenableWebDriver): WebElementPromise {
@@ -160,26 +168,26 @@ function descriptionInput(i: number, j = 1): Locator {
     return By.css(`particle-description > table > tr:nth-of-type(${i}) > td > number-edit:nth-of-type(${j}) > input`);
 }
 
-export function getPositionXInput(driver: ThenableWebDriver): WebElementPromise {
+export function getPositionXInput(driver: WebDriver): WebElementPromise {
     return driver.findElement(descriptionInput(1, 1));
 }
 
-export function getPositionYInput(driver: ThenableWebDriver): WebElementPromise {
+export function getPositionYInput(driver: WebDriver): WebElementPromise {
     return driver.findElement(descriptionInput(1, 2));
 }
 
-export function getRadiusInput(driver: ThenableWebDriver): WebElementPromise {
+export function getRadiusInput(driver: WebDriver): WebElementPromise {
     return driver.findElement(descriptionInput(2));
 }
 
-export function getVelocityXInput(driver: ThenableWebDriver): WebElementPromise {
+export function getVelocityXInput(driver: WebDriver): WebElementPromise {
     return driver.findElement(descriptionInput(3, 1));
 }
 
-export function getVelocityYInput(driver: ThenableWebDriver): WebElementPromise {
+export function getVelocityYInput(driver: WebDriver): WebElementPromise {
     return driver.findElement(descriptionInput(3, 2));
 }
 
-export function getMassInput(driver: ThenableWebDriver): WebElementPromise {
+export function getMassInput(driver: WebDriver): WebElementPromise {
     return driver.findElement(descriptionInput(4));
 }

@@ -18,6 +18,7 @@
             (circleDehover)="onCircleDehover(particle)"
             (circleFocus)="onCircleFocus(particle)"
             (circleBlur)="onCircleBlur(particle)"
+            (keyup.esc)="$event.target.blur()"
         />
         <circle
             *ngIf="pendingParticle"
@@ -32,6 +33,7 @@
     [(action)]="action"
     [(gravitySimulator)]="gravitySimulator"
     [(gravitationalConstant)]="gravitationalConstant"
+    [(collisionSimulator)]="collisionSimulator"
     (undo)="undo()"
     (redo)="redo()"
     (step)="step()"
@@ -40,13 +42,13 @@
 ></toolbar>
 <mouse-tracker *ngIf="showTracker"></mouse-tracker>
 <particle-description
-    *ngIf="circleHover || circleFocus || descriptionHover || descriptionFocus"
+    #particleDescription
+    *ngIf="circleHover || circleFocus || descriptionFocus"
     [particle]="described"
     [style.left.px]="described ? converter.modelToSvgX(described.positionX + described.radius) : 0"
     [style.top.px]="described ? converter.modelToSvgY(described?.positionY) : 0"
     [focus]="circleFocus || descriptionFocus"
-    (mouseenter)="descriptionHover = true"
-    (mouseleave)="descriptionHover = false"
     (focusin)="descriptionFocus = true"
     (focusout)="descriptionFocus = $event.currentTarget.contains($event.relatedTarget)"
+    (keyup.esc)="$event.target.blur()"
 ></particle-description>

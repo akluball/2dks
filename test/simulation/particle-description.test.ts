@@ -2,7 +2,6 @@ import {
     addParticle,
     click,
     move,
-    relMove,
     selectAddParticleAction,
 } from '../actions';
 import { Context, setup, cleanup } from '../context';
@@ -27,27 +26,20 @@ import {
     count,
     getActiveElement
 } from '../util';
+import { Key } from 'selenium-webdriver';
 
 describe('particle description', function() {
     beforeEach(setup);
     afterEach(cleanup);
 
-    it('exists when circle hovered', async function(this: Context) {
+    it('present when circle hovered', async function(this: Context) {
         await selectAddParticleAction(this.driver);
         await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
-        await move(this.driver, { x: 205, y: 200 });
+        await move(this.driver, { x: 200, y: 200 });
         await getParticleDescription(this.driver);
     });
 
-    it('exists when description hovered', async function(this: Context) {
-        await selectAddParticleAction(this.driver);
-        await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
-        await move(this.driver, { x: 204, y: 200 });
-        await relMove(this.driver, { dx: 2 });
-        await getParticleDescription(this.driver);
-    });
-
-    it('exists when circle focused', async function(this: Context) {
+    it('present when circle focused', async function(this: Context) {
         await selectAddParticleAction(this.driver);
         await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
         await click(this.driver, { x: 200, y: 200 });
@@ -55,7 +47,7 @@ describe('particle description', function() {
         await getParticleDescription(this.driver);
     });
 
-    it('exists when description focused', async function(this: Context) {
+    it('present when description focused', async function(this: Context) {
         await selectAddParticleAction(this.driver);
         await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
         await click(this.driver, { x: 200, y: 200 });
@@ -64,10 +56,28 @@ describe('particle description', function() {
         await getParticleDescription(this.driver);
     });
 
-    it('does not exist when circle/description not hovered/focused', async function(this: Context) {
+    it('absent when circle/description not hovered/focused', async function(this: Context) {
         await selectAddParticleAction(this.driver);
         await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
         await move(this.driver, { x: 194, y: 200 });
+        expect(await count(getParticleDescriptions(this.driver))).toBe(0);
+    });
+
+    it('removed on description escape keyup', async function(this: Context) {
+        await selectAddParticleAction(this.driver);
+        await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
+        await click(this.driver, { x: 200, y: 200 });
+        await getParticleDescription(this.driver).click();
+        await this.driver.actions().sendKeys(Key.ESCAPE).perform();
+        expect(await getActiveElement(this.driver).getTagName()).not.toBe('particle-description');
+    });
+
+    it('not editable on circle escape keyup', async function(this: Context) {
+        await selectAddParticleAction(this.driver);
+        await addParticle(this.driver, { cx: 200, cy: 200, r: 5 });
+        await click(this.driver, { x: 200, y: 200 });
+        await this.driver.actions().sendKeys(Key.ESCAPE).perform();
+        await move(this.driver, { x: 0, y: 0 });
         expect(await count(getParticleDescriptions(this.driver))).toBe(0);
     });
 

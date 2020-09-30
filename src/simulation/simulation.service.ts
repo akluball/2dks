@@ -3,8 +3,9 @@ import History from './history/History';
 import { UndoRedoBuilder } from './history/UndoRedo';
 import ParticleSnapshot from './model/ParticleSnapshot';
 import Simulation from './model/Simulation';
-import { ReadonlyVector, distanceBetween } from './model/vector';
+import { ReadonlyVector, distanceBetween } from './model/geometry';
 import GravitySimulator from './model/GravitySimulator';
+import CollisionSimulator from './model/CollisionSimulator';
 
 @Injectable()
 export class SimulationService {
@@ -53,6 +54,24 @@ export class SimulationService {
                                           .build();
         this.history.appendUndo(undo);
         this.simulation.gravitationalConstant = gravitationalConstant;
+    }
+
+    get collisionSimulator(): CollisionSimulator {
+        return this.simulation.collisionSimulator;
+    }
+
+    set collisionSimulator(collisionSimulator: CollisionSimulator) {
+        const previous = this.simulation.collisionSimulator;
+        const undo = new UndoRedoBuilder()
+                                          .undoAction(() => {
+                                              this.simulation.collisionSimulator = previous;
+                                          })
+                                          .redoAction(() => {
+                                              this.simulation.collisionSimulator = collisionSimulator;
+                                          })
+                                          .build();
+        this.history.appendUndo(undo);
+        this.simulation.collisionSimulator = collisionSimulator;
     }
 
     undo(): void {
